@@ -53,10 +53,10 @@ const SignUp = () => {
         profileImageUrl,
       });
 
-      const { token, user } = response.data;
+      const { token } = response.data;
       if (token) {
         localStorage.setItem("token", token);
-        updateUser(user);
+        updateUser(response.data.user);
         navigate("/dashboard");
       }
     } catch (error) {
@@ -79,59 +79,112 @@ const SignUp = () => {
 
   return (
     <AuthLayout>
-      <div className="lg:w-[100%] h-auto md:h-full md:mt-0 flex flex-col justify-center">
-        <h3 className="text-xl font-semibold text-black">Create an Account</h3>
-        <p className="text-xs text-slate-700 mt-1 mb-6">
-          Please enter your details to create an account
-        </p>
-
-        <form onSubmit={handleSignUp}>
-          <ProfilePhotoSelector image={profile} setImage={setProfile} />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              type="text"
-              label="Full Name"
-              placeholder="Full Name"
-            />
-
-            <Input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              label="Email Address"
-              placeholder="Email"
-            />
-          </div>
-          <div className="col-span-2">
-            <Input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              label="Password"
-              placeholder="Password"
-            />
-          </div>
-
-          {error && <p className="text-red-500 text-xs pb-3">{error}</p>}
-
-          <button type="submit" className="btn-primary">
-            Sign Up
-          </button>
-
-          <p className="text-[13px] text-slate-800 mt-3">
-            Already have an account?{" "}
-            <button
-              type="button"
-              onClick={handleNavigateLogin}
-              className="text-primary underline font-medium"
-            >
-              Login
-            </button>
+      <div className="w-full">
+        {/* Header Section */}
+        <div className="text-center mb-6">
+          <h3 className="text-2xl md:text-3xl font-bold text-emerald-700 mb-2 tracking-tight">
+            Create Account
+          </h3>
+          <p className="text-emerald-600/80 text-sm font-medium leading-relaxed">
+            Join us and start managing your finances
           </p>
-        </form>
+        </div>
+
+        {/* Form Section */}
+        <div className="space-y-5">
+          <form onSubmit={handleSignUp} className="space-y-4">
+            {/* Profile Photo */}
+            <div className="flex justify-center mb-4">
+              <ProfilePhotoSelector image={profile} setImage={setProfile} />
+            </div>
+
+            {/* Input Fields */}
+            <div className="space-y-4">
+              <Input
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                type="text"
+                label="Full Name"
+                placeholder="Enter your full name"
+              />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  label="Email Address"
+                  placeholder="Enter your email"
+                />
+
+                <Input
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                  label="Password"
+                  placeholder="Min. 8 characters"
+                />
+              </div>
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-50/90 backdrop-blur-xl border border-red-200/60 rounded-xl p-3 shadow-lg">
+                <div className="flex items-center">
+                  <svg
+                    className="w-4 h-4 text-red-400 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <p className="text-red-700 text-xs font-medium">{error}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Sign Up Button */}
+            <button
+              type="submit"
+              className="btn-primary relative overflow-hidden group"
+            >
+              <span className="relative z-10 flex items-center justify-center">
+                <svg
+                  className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                  />
+                </svg>
+                Create Account
+              </span>
+            </button>
+          </form>
+
+          {/* Login Link */}
+          <div className="text-center pt-4 border-t border-white/20">
+            <p className="text-emerald-600/80 text-sm">
+              Already have an account?{" "}
+              <button
+                type="button"
+                onClick={handleNavigateLogin}
+                className="text-teal-600 hover:text-teal-700 font-semibold transition-colors hover:underline"
+              >
+                Sign In
+              </button>
+            </p>
+          </div>
+        </div>
       </div>
     </AuthLayout>
   );

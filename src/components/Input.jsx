@@ -9,8 +9,10 @@ const Input = ({ value, onChange, type, label, placeholder }) => {
   };
   return (
     <div className="flex flex-col">
-      <label className="mb-1 text-[13px] text-slate-800">{label}</label>
-      <div className="input-box ">
+      <label className="mb-3 text-sm text-emerald-700 font-semibold">
+        {label}
+      </label>
+      <div className="input-box">
         <input
           value={value}
           onChange={(e) => onChange(e)}
@@ -18,20 +20,20 @@ const Input = ({ value, onChange, type, label, placeholder }) => {
             type === "password" ? (showPassword ? "text" : "password") : type
           }
           placeholder={placeholder}
-          className="border border-slate-300 p-2 rounded-md"
+          className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-500 font-medium"
         />
         {type === "password" && (
           <>
             {showPassword ? (
               <FaRegEye
-                size={22}
-                className="text-primary cursor-pointer"
+                size={20}
+                className="text-emerald-600 hover:text-emerald-700 cursor-pointer transition-colors"
                 onClick={() => togglePassword()}
               />
             ) : (
               <FaRegEyeSlash
-                size={22}
-                className="text-primary cursor-pointer"
+                size={20}
+                className="text-emerald-600 hover:text-emerald-700 cursor-pointer transition-colors"
                 onClick={() => togglePassword()}
               />
             )}

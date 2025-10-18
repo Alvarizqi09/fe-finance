@@ -1,4 +1,4 @@
-export const BASE_API_URL = "http://localhost:8000/";
+export const BASE_API_URL = "https://befinanceapp.vercel.app/";
 
 export const API_PATHS = {
   AUTH: {
