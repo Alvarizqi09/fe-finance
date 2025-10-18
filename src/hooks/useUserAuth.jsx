@@ -8,10 +8,9 @@ export const useUserAuth = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token && user) {
       clearUser();
       navigate("/login", { replace: true });
-      return;
     }
   }, [user, clearUser, navigate]);
 

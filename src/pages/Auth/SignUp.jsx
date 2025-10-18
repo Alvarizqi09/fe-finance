@@ -1,4 +1,6 @@
 import React, { useContext, useState } from "react";
+import LoadingPopup from "../../components/LoadingPopup";
+import ErrorPopup from "../../components/ErrorPopup";
 import AuthLayout from "../../components/AuthLayout";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
@@ -14,6 +16,8 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,21 +30,24 @@ const SignUp = () => {
 
     if (!validateEmail(email)) {
       setError("Please enter a valid email address");
+      setShowError(true);
       return;
     }
 
     if (!fullName || !password) {
       setError("Please fill in all fields");
+      setShowError(true);
       return;
     }
 
     if (password.length < 8) {
       setError("Password must be at least 8 characters long");
+      setShowError(true);
       return;
     }
 
     setError(null);
-
+    setLoading(true);
     try {
       if (profile) {
         const imgUploadRes = await uploadImage(profile);
@@ -69,6 +76,9 @@ const SignUp = () => {
       } else {
         setError("Something went wrong. Please try again later.");
       }
+      setShowError(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,8 +89,13 @@ const SignUp = () => {
 
   return (
     <AuthLayout>
+      <LoadingPopup show={loading} text="Creating your account..." />
+      <ErrorPopup
+        show={showError}
+        text={error}
+        onClose={() => setShowError(false)}
+      />
       <div className="w-full">
-        {/* Header Section */}
         <div className="text-center mb-6">
           <h3 className="text-2xl md:text-3xl font-bold text-emerald-700 mb-2 tracking-tight">
             Create Account
@@ -89,16 +104,11 @@ const SignUp = () => {
             Join us and start managing your finances
           </p>
         </div>
-
-        {/* Form Section */}
         <div className="space-y-5">
           <form onSubmit={handleSignUp} className="space-y-4">
-            {/* Profile Photo */}
             <div className="flex justify-center mb-4">
               <ProfilePhotoSelector image={profile} setImage={setProfile} />
             </div>
-
-            {/* Input Fields */}
             <div className="space-y-4">
               <Input
                 value={fullName}
@@ -126,28 +136,6 @@ const SignUp = () => {
                 />
               </div>
             </div>
-
-            {/* Error Message */}
-            {error && (
-              <div className="bg-red-50/90 backdrop-blur-xl border border-red-200/60 rounded-xl p-3 shadow-lg">
-                <div className="flex items-center">
-                  <svg
-                    className="w-4 h-4 text-red-400 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <p className="text-red-700 text-xs font-medium">{error}</p>
-                </div>
-              </div>
-            )}
-
-            {/* Sign Up Button */}
             <button
               type="submit"
               className="btn-primary relative overflow-hidden group"
@@ -170,11 +158,9 @@ const SignUp = () => {
               </span>
             </button>
           </form>
-
-          {/* Login Link */}
           <div className="text-center pt-4 border-t border-white/20">
             <p className="text-emerald-600/80 text-sm">
-              Already have an account?{" "}
+              Already have an account?
               <button
                 type="button"
                 onClick={handleNavigateLogin}

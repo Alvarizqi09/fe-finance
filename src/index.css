@@ -38,7 +38,7 @@ body {
 }
 
 .glass-card {
-  @apply bg-white/30 backdrop-blur-2xl rounded-3xl border border-white/50 shadow-2xl shadow-green-100/30;
+  @apply bg-white/30 backdrop-blur-2xl rounded-3xl border border-white/50 shadow-2xl shadow-black/10;
 }
 
 .glass-bg {
