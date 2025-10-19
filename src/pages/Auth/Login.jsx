@@ -115,8 +115,6 @@ const Login = () => {
                 Forgot Password?
               </button>
             </div>
-
-            {/* Error message replaced by ErrorPopup modal */}
             <button
               type="submit"
               className="btn-primary relative overflow-hidden group"

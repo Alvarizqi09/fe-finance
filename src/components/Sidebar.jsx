@@ -23,7 +23,7 @@ const Sidebar = ({ activeMenu }) => {
   };
 
   return (
-    <div className="w-56 sm:w-64 h-[calc(100vh-48px)] bg-white shadow-lg p-4 sm:p-6 border-r border-gray-200/50 overflow-y-auto sticky top-[48px]">
+    <div className="w-56 sm:w-64 h-[calc(100vh-48px)] shadow-lg p-4 sm:p-6 border-r border-gray-200/50 overflow-y-auto sticky top-[48px]">
       <div className="flex flex-col items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-3 mb-5 sm:mb-7">
         {user?.profileImageUrl ? (
           <img

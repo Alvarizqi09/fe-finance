@@ -25,3 +25,12 @@ export const addThounsandSeparators = (num) => {
     ? `${withSeparators}.${fractionalPart}`
     : withSeparators;
 };
+
+export const prepareExpenseBarChartData = (data = []) => {
+  const chartData = data.map((item) => ({
+    source: item?.source,
+    amount: item?.amount,
+  }));
+
+  return chartData;
+};

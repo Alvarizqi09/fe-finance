@@ -3,7 +3,7 @@ import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 
 const Navbar = ({ openSidebar, setOpenSidebar }) => {
   return (
-    <div className="flex items-center gap-3 sm:gap-5 shadow-lg bg-white border-b border-gray-200/50 h-12 sm:h-14 px-3 sm:px-4 sticky top-0 z-50">
+    <div className="flex bg-white items-center gap-3 sm:gap-5 shadow-lg border-b border-gray-200/50 h-12 sm:h-14 px-3 sm:px-4 sticky top-0 z-50">
       <button
         className="min-[1280px]:hidden text-gray-700 hover:text-gray-900 p-1 hover:bg-gray-100 rounded-md transition-colors"
         onClick={() => setOpenSidebar(!openSidebar)}

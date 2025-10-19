@@ -7,6 +7,10 @@ import { API_PATHS } from "../../utils/apiPaths";
 import InfoCard from "../../components/InfoCard";
 import { addThounsandSeparators } from "../../utils/helper";
 import { IoMdCard } from "react-icons/io";
+import RecentTransactions from "../../components/RecentTransactions";
+import FinanceOverview from "../../components/FinanceOverview";
+import ExpenseTransactions from "../../components/ExpenseTransactions";
+import Last30DaysExpenses from "../../components/Last30DaysExpenses";
 
 const Home = () => {
   useUserAuth();
@@ -42,7 +46,7 @@ const Home = () => {
 
   return (
     <DashboardLayout activeMenu="Dashboard">
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="w-full mx-auto">
         <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
           Dashboard Overview
         </h1>
@@ -67,6 +71,28 @@ const Home = () => {
             label="Total Expenses"
             value={addThounsandSeparators(dashboardData?.totalExpense || 0)}
             color="bg-red-500"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6 mt-6 ">
+          <RecentTransactions
+            transactions={dashboardData?.recentTransactions || []}
+            onSeeMore={() => navigate("/expense")}
+          />
+
+          <FinanceOverview
+            totalBalance={dashboardData?.totalBalance || 0}
+            totalIncome={dashboardData?.totalIncome || 0}
+            totalExpense={dashboardData?.totalExpense || 0}
+          />
+
+          <ExpenseTransactions
+            transactions={dashboardData?.last7DaysExpenses?.transactions || []}
+            onSeeMore={() => navigate("/expense")}
+          />
+
+          <Last30DaysExpenses
+            data={dashboardData?.last30DaysExpenses?.transactions || []}
           />
         </div>
       </div>
