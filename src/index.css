@@ -25,8 +25,10 @@ body {
     #d1fae5 50%,
     #a7f3d0 100%
   );
+  background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .input-box {
@@ -57,4 +59,42 @@ body {
 
 .card-btn {
   @apply flex items-center gap-3 text-[12px] font-medium text-gray-700 hover:text-white hover:bg-primary px-4 py-1.5 bg-white border border-gray-200/50 cursor-pointer rounded-2xl shadow-md transition-all duration-300;
+}
+
+.add-btn {
+  @apply flex items-center gap-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-400 to-teal-500 px-4 py-2 rounded-2xl shadow-lg shadow-emerald-200/40 hover:from-emerald-500 hover:to-teal-600 hover:shadow-xl hover:shadow-emerald-300/50 transition-all duration-300;
+}
+
+.add-btn-fill {
+  @apply text-white bg-primary;
+}
+
+/* Skeleton Loading Animations */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right, #f0f0f0 4%, #e0e0e0 25%, #f0f0f0 36%);
+  background-size: 1000px 100%;
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

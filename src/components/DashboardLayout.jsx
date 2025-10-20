@@ -8,7 +8,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
   const [openSidebar, setOpenSidebar] = useState(false);
 
   return (
-    <div className="min-h-screen">
+    <div className="bg-white min-h-screen">
       <Navbar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
       {openSidebar && (
         <div
@@ -18,23 +18,23 @@ const DashboardLayout = ({ children, activeMenu }) => {
       )}
 
       <div className="flex">
-        <div className="max-[1280px]:hidden flex-shrink-0">
+        <div className="max-[1280px]:hidden flex-shrink-0 h-[calc(100vh-48px)] sticky top-[48px]">
           {user ? (
             <Sidebar activeMenu={activeMenu} />
           ) : (
-            <div className="w-64 h-[calc(100vh-48px)] flex items-center justify-center">
+            <div className="w-64 h-full flex items-center justify-center">
               <p className="text-gray-500">Loading...</p>
             </div>
           )}
         </div>
         <div
-          className={`min-[1280px]:hidden fixed top-[48px] left-0 z-40 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${
+          className={`min-[1280px]:hidden fixed top-[48px] left-0 z-40 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out h-[calc(100vh-48px)] overflow-y-auto ${
             openSidebar ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           {user && <Sidebar activeMenu={activeMenu} />}
         </div>
-        <div className="flex-1 min-w-0 px-3 sm:px-4 md:px-5 py-4 sm:py-5">
+        <div className="flex-1 min-w-0 px-3 sm:px-4 md:px-5 py-4 sm:py-5 pb-8">
           {children}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import DashboardLayout from "../../components/DashboardLayout";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import { useNavigate } from "react-router-dom";
@@ -11,43 +11,43 @@ import RecentTransactions from "../../components/RecentTransactions";
 import FinanceOverview from "../../components/FinanceOverview";
 import ExpenseTransactions from "../../components/ExpenseTransactions";
 import Last30DaysExpenses from "../../components/Last30DaysExpenses";
+import { useQuery } from "@tanstack/react-query";
+import RecentIncomeChart from "../../components/RecentIncomeChart";
+import RecentIncome from "../../components/RecentIncome";
+import { DashboardGridSkeleton } from "../../components/SkeletonLoading";
 
 const Home = () => {
   useUserAuth();
 
   const navigate = useNavigate();
 
-  const [dashboardData, setDashboardData] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const fetchDashboardData = useCallback(async () => {
-    if (loading) return;
-    setLoading(true);
-
-    try {
+  const { data: dashboardData, isLoading: loading } = useQuery({
+    queryKey: ["dashboardData"],
+    queryFn: async () => {
       const response = await axiosInstance.get(
         `${API_PATHS.DASHBOARD.GET_DATA}`
       );
+      return response.data;
+    },
+    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
+    retry: 2, // Retry failed requests up to 2 times
+  });
 
-      if (response.data) {
-        setDashboardData(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching dashboard data:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [loading]);
-
-  useEffect(() => {
-    fetchDashboardData();
-    return () => {};
-  }, [fetchDashboardData]);
+  if (loading) {
+    return (
+      <DashboardLayout activeMenu="Dashboard">
+        <DashboardGridSkeleton />
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout activeMenu="Dashboard">
-      <div className="w-full mx-auto">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
+      <div className="w-full mx-auto pb-10">
+        <h1
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6"
+          loading="eager"
+        >
           Dashboard Overview
         </h1>
 
@@ -74,7 +74,7 @@ const Home = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6 mt-6 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6 mt-6 pb-6">
           <RecentTransactions
             transactions={dashboardData?.recentTransactions || []}
             onSeeMore={() => navigate("/expense")}
@@ -93,6 +93,18 @@ const Home = () => {
 
           <Last30DaysExpenses
             data={dashboardData?.last30DaysExpenses?.transactions || []}
+          />
+
+          <RecentIncomeChart
+            data={
+              dashboardData?.last30DaysIncome?.transactions?.slice(0, 4) || []
+            }
+            totalIncome={dashboardData?.totalIncome || 0}
+          />
+
+          <RecentIncome
+            data={dashboardData?.last30DaysIncome?.transactions || []}
+            onSeeMore={() => navigate("/income")}
           />
         </div>
       </div>
