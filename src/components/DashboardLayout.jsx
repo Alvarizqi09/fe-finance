@@ -2,13 +2,14 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../context/UserContextObject";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import Footer from "./Footer";
 
 const DashboardLayout = ({ children, activeMenu }) => {
   const { user } = useContext(UserContext);
   const [openSidebar, setOpenSidebar] = useState(false);
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white min-h-screen flex flex-col">
       <Navbar openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
       {openSidebar && (
         <div
@@ -17,7 +18,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
         />
       )}
 
-      <div className="flex">
+      <div className="flex flex-1">
         <div className="max-[1280px]:hidden flex-shrink-0 h-[calc(100vh-48px)] sticky top-[48px]">
           {user ? (
             <Sidebar activeMenu={activeMenu} />
@@ -34,8 +35,11 @@ const DashboardLayout = ({ children, activeMenu }) => {
         >
           {user && <Sidebar activeMenu={activeMenu} />}
         </div>
-        <div className="flex-1 min-w-0 px-3 sm:px-4 md:px-5 py-4 sm:py-5 pb-8">
-          {children}
+        <div className="flex-1 min-w-0 flex flex-col">
+          <div className="flex-1 px-3 sm:px-4 md:px-5 py-4 sm:py-5 pb-8">
+            {children}
+          </div>
+          <Footer />
         </div>
       </div>
     </div>
