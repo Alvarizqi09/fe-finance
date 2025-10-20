@@ -7,7 +7,7 @@ const AuthLayout = ({ children }) => {
     <div className="flex min-h-screen">
       <div className="w-screen h-screen md:w-[60vw] px-8 md:px-12 py-6 md:py-8 flex flex-col">
         <h2 className="text-xl font-semibold text-emerald-700 mb-6">
-          Finance App
+          Stack It
         </h2>
         <div className="flex-1 flex items-center justify-center">
           <div className="glass-card p-6 md:p-8 w-full max-w-md mx-auto">

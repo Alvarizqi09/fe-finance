@@ -17,7 +17,7 @@ const Navbar = ({ openSidebar, setOpenSidebar }) => {
       </button>
 
       <h2 className="text-base sm:text-lg md:text-xl font-bold text-emerald-700 truncate">
-        Finance App
+        Stack It
       </h2>
     </div>
   );
