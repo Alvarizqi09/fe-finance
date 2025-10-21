@@ -36,9 +36,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
           {user && <Sidebar activeMenu={activeMenu} />}
         </div>
         <div className="flex-1 min-w-0 flex flex-col">
-          <div className="flex-1 px-3 sm:px-4 md:px-5 py-4 sm:py-5 pb-8">
-            {children}
-          </div>
+          <div className="flex-1 px-3 sm:px-4 md:px-5 py-4">{children}</div>
           <Footer />
         </div>
       </div>

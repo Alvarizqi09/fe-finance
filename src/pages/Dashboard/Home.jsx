@@ -43,7 +43,7 @@ const Home = () => {
 
   return (
     <DashboardLayout activeMenu="Dashboard">
-      <div className="w-full mx-auto pb-10">
+      <div className="relative w-full overflow-x-hidden">
         <h1
           className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6"
           loading="eager"
