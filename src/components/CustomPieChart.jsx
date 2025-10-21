@@ -26,8 +26,8 @@ const CustomPieChart = ({
           nameKey="name"
           cx="50%"
           cy="50%"
-          outerRadius={130}
-          innerRadius={100}
+          outerRadius={110}
+          innerRadius={80}
           labelLine={false}
         >
           {data.map((entry, index) => (
@@ -42,21 +42,23 @@ const CustomPieChart = ({
             <text
               x="50%"
               y="50%"
-              dy={-30}
+              dy={-15}
               textAnchor="middle"
               fill="#666"
-              fontSize={"14px"}
+              fontSize="12px"
+              fontFamily="system-ui, -apple-system, sans-serif"
             >
               {label}
             </text>
             <text
               x="50%"
               y="50%"
-              dy={10}
+              dy={15}
               textAnchor="middle"
               fill="#333"
-              fontSize={"24px"}
-              fontWeight={"semi-bold"}
+              fontSize="20px"
+              fontWeight="600"
+              fontFamily="system-ui, -apple-system, sans-serif"
             >
               {totalBalance}
             </text>
