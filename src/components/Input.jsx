@@ -9,6 +9,7 @@ const Input = ({
   placeholder,
   textColor,
   placeholderColor,
+  className,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -28,9 +29,12 @@ const Input = ({
             type === "password" ? (showPassword ? "text" : "password") : type
           }
           placeholder={placeholder}
-          className={`flex-1 bg-transparent outline-none ${
-            textColor || "text-gray-700"
-          } ${placeholderColor || "placeholder-gray-500"} font-medium`}
+          className={
+            className ||
+            `flex-1 bg-gray-700 outline-none ${textColor || "text-gray-700"} ${
+              placeholderColor || "placeholder-gray-500"
+            } font-medium`
+          }
         />
         {type === "password" && (
           <>
