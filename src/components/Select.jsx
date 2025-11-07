@@ -8,6 +8,7 @@ const Select = ({
   placeholder = "Select an option",
   textColor,
   className,
+  optionClassName,
 }) => {
   return (
     <div className="flex flex-col">
@@ -25,11 +26,15 @@ const Select = ({
             } font-medium cursor-pointer`
           }
         >
-          <option value="" disabled>
+          <option value="" disabled className={optionClassName}>
             {placeholder}
           </option>
           {options.map((option) => (
-            <option key={option.value} value={option.value}>
+            <option
+              key={option.value}
+              value={option.value}
+              className={optionClassName}
+            >
               {option.label}
             </option>
           ))}

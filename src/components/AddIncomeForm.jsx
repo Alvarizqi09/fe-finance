@@ -29,6 +29,7 @@ const AddIncomeForm = ({ onAddIncome }) => {
         placeholder="Pilih sumber income"
         options={INCOME_SOURCES}
         textColor="text-white"
+        optionClassName="bg-gray-700 text-white hover:bg-emerald-600 focus:bg-emerald-700 transition-colors"
       />
       <Input
         value={income.amount}
