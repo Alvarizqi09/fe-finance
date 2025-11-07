@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx";
+import * as XLSX from "xlsx-js-style";
 import moment from "moment";
 import { addThounsandSeparators } from "./helper";
 
@@ -82,14 +82,14 @@ export const generateExpenseExcelReport = (
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
 
-  // Set column widths
+  // Set column widths - increased for better visibility
   worksheet["!cols"] = [
-    { wch: 6 }, // No.
-    { wch: 25 }, // Source
-    { wch: 18 }, // Amount
+    { wch: 8 }, // No.
+    { wch: 30 }, // Source
+    { wch: 20 }, // Amount
     { wch: 15 }, // Date
-    { wch: 12 }, // Month
-    { wch: 8 }, // Year
+    { wch: 15 }, // Month
+    { wch: 10 }, // Year
   ];
 
   // Merge cells for title
@@ -98,6 +98,105 @@ export const generateExpenseExcelReport = (
     { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } }, // Date row
     { s: { r: 3, c: 0 }, e: { r: 3, c: 5 } }, // SUMMARY title
   ];
+
+  // Apply styles to cells
+  const range = XLSX.utils.decode_range(worksheet["!ref"]);
+
+  // Style for title (row 0)
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const address = XLSX.utils.encode_cell({ r: 0, c: C });
+    if (!worksheet[address]) continue;
+    worksheet[address].s = {
+      font: { bold: true, sz: 16, color: { rgb: "FFFFFF" } },
+      fill: { fgColor: { rgb: "1E3A8A" } }, // Dark blue
+      alignment: { horizontal: "center", vertical: "center" },
+    };
+  }
+
+  // Style for generated date (row 1)
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const address = XLSX.utils.encode_cell({ r: 1, c: C });
+    if (!worksheet[address]) continue;
+    worksheet[address].s = {
+      font: { italic: true, sz: 10 },
+      alignment: { horizontal: "center", vertical: "center" },
+      fill: { fgColor: { rgb: "E0E7FF" } }, // Light blue
+    };
+  }
+
+  // Style for SUMMARY title (row 3)
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const address = XLSX.utils.encode_cell({ r: 3, c: C });
+    if (!worksheet[address]) continue;
+    worksheet[address].s = {
+      font: { bold: true, sz: 14, color: { rgb: "FFFFFF" } },
+      fill: { fgColor: { rgb: "059669" } }, // Green
+      alignment: { horizontal: "center", vertical: "center" },
+    };
+  }
+
+  // Style for summary rows (rows 4-8)
+  for (let R = 4; R <= 8; ++R) {
+    for (let C = range.s.c; C <= 1; ++C) {
+      const address = XLSX.utils.encode_cell({ r: R, c: C });
+      if (!worksheet[address]) continue;
+      worksheet[address].s = {
+        font: { bold: C === 0, sz: 11 },
+        fill: { fgColor: { rgb: C === 0 ? "D1FAE5" : "FFFFFF" } }, // Light green for labels
+        alignment: {
+          horizontal: C === 0 ? "left" : "right",
+          vertical: "center",
+        },
+        border: {
+          top: { style: "thin", color: { rgb: "E5E7EB" } },
+          bottom: { style: "thin", color: { rgb: "E5E7EB" } },
+          left: { style: "thin", color: { rgb: "E5E7EB" } },
+          right: { style: "thin", color: { rgb: "E5E7EB" } },
+        },
+      };
+    }
+  }
+
+  // Style for table header (row 10)
+  const headerRow = 10;
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const address = XLSX.utils.encode_cell({ r: headerRow, c: C });
+    if (!worksheet[address]) continue;
+    worksheet[address].s = {
+      font: { bold: true, sz: 12, color: { rgb: "FFFFFF" } },
+      fill: { fgColor: { rgb: "DC2626" } }, // Red for expense
+      alignment: { horizontal: "center", vertical: "center" },
+      border: {
+        top: { style: "medium", color: { rgb: "000000" } },
+        bottom: { style: "medium", color: { rgb: "000000" } },
+        left: { style: "thin", color: { rgb: "000000" } },
+        right: { style: "thin", color: { rgb: "000000" } },
+      },
+    };
+  }
+
+  // Style for data rows (alternating colors)
+  for (let R = 11; R < range.e.r - 1; ++R) {
+    const isEven = (R - 11) % 2 === 0;
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const address = XLSX.utils.encode_cell({ r: R, c: C });
+      if (!worksheet[address]) continue;
+      worksheet[address].s = {
+        font: { sz: 10 },
+        fill: { fgColor: { rgb: isEven ? "FFFFFF" : "FEE2E2" } }, // Alternating white and light red
+        alignment: {
+          horizontal: C === 0 ? "center" : C === 1 ? "left" : "right",
+          vertical: "center",
+        },
+        border: {
+          top: { style: "thin", color: { rgb: "E5E7EB" } },
+          bottom: { style: "thin", color: { rgb: "E5E7EB" } },
+          left: { style: "thin", color: { rgb: "E5E7EB" } },
+          right: { style: "thin", color: { rgb: "E5E7EB" } },
+        },
+      };
+    }
+  }
 
   // Add worksheet to workbook
   XLSX.utils.book_append_sheet(workbook, worksheet, "Expense Report");
@@ -192,14 +291,14 @@ export const generateIncomeExcelReport = (
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
 
-  // Set column widths
+  // Set column widths - increased for better visibility
   worksheet["!cols"] = [
-    { wch: 6 }, // No.
-    { wch: 25 }, // Source
-    { wch: 18 }, // Amount
+    { wch: 8 }, // No.
+    { wch: 30 }, // Source
+    { wch: 20 }, // Amount
     { wch: 15 }, // Date
-    { wch: 12 }, // Month
-    { wch: 8 }, // Year
+    { wch: 15 }, // Month
+    { wch: 10 }, // Year
   ];
 
   // Merge cells for title
@@ -208,6 +307,105 @@ export const generateIncomeExcelReport = (
     { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } }, // Date row
     { s: { r: 3, c: 0 }, e: { r: 3, c: 5 } }, // SUMMARY title
   ];
+
+  // Apply styles to cells
+  const range = XLSX.utils.decode_range(worksheet["!ref"]);
+
+  // Style for title (row 0)
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const address = XLSX.utils.encode_cell({ r: 0, c: C });
+    if (!worksheet[address]) continue;
+    worksheet[address].s = {
+      font: { bold: true, sz: 16, color: { rgb: "FFFFFF" } },
+      fill: { fgColor: { rgb: "1E3A8A" } }, // Dark blue
+      alignment: { horizontal: "center", vertical: "center" },
+    };
+  }
+
+  // Style for generated date (row 1)
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const address = XLSX.utils.encode_cell({ r: 1, c: C });
+    if (!worksheet[address]) continue;
+    worksheet[address].s = {
+      font: { italic: true, sz: 10 },
+      alignment: { horizontal: "center", vertical: "center" },
+      fill: { fgColor: { rgb: "E0E7FF" } }, // Light blue
+    };
+  }
+
+  // Style for SUMMARY title (row 3)
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const address = XLSX.utils.encode_cell({ r: 3, c: C });
+    if (!worksheet[address]) continue;
+    worksheet[address].s = {
+      font: { bold: true, sz: 14, color: { rgb: "FFFFFF" } },
+      fill: { fgColor: { rgb: "059669" } }, // Green
+      alignment: { horizontal: "center", vertical: "center" },
+    };
+  }
+
+  // Style for summary rows (rows 4-8)
+  for (let R = 4; R <= 8; ++R) {
+    for (let C = range.s.c; C <= 1; ++C) {
+      const address = XLSX.utils.encode_cell({ r: R, c: C });
+      if (!worksheet[address]) continue;
+      worksheet[address].s = {
+        font: { bold: C === 0, sz: 11 },
+        fill: { fgColor: { rgb: C === 0 ? "D1FAE5" : "FFFFFF" } }, // Light green for labels
+        alignment: {
+          horizontal: C === 0 ? "left" : "right",
+          vertical: "center",
+        },
+        border: {
+          top: { style: "thin", color: { rgb: "E5E7EB" } },
+          bottom: { style: "thin", color: { rgb: "E5E7EB" } },
+          left: { style: "thin", color: { rgb: "E5E7EB" } },
+          right: { style: "thin", color: { rgb: "E5E7EB" } },
+        },
+      };
+    }
+  }
+
+  // Style for table header (row 10)
+  const headerRow = 10;
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const address = XLSX.utils.encode_cell({ r: headerRow, c: C });
+    if (!worksheet[address]) continue;
+    worksheet[address].s = {
+      font: { bold: true, sz: 12, color: { rgb: "FFFFFF" } },
+      fill: { fgColor: { rgb: "059669" } }, // Green for income
+      alignment: { horizontal: "center", vertical: "center" },
+      border: {
+        top: { style: "medium", color: { rgb: "000000" } },
+        bottom: { style: "medium", color: { rgb: "000000" } },
+        left: { style: "thin", color: { rgb: "000000" } },
+        right: { style: "thin", color: { rgb: "000000" } },
+      },
+    };
+  }
+
+  // Style for data rows (alternating colors)
+  for (let R = 11; R < range.e.r - 1; ++R) {
+    const isEven = (R - 11) % 2 === 0;
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const address = XLSX.utils.encode_cell({ r: R, c: C });
+      if (!worksheet[address]) continue;
+      worksheet[address].s = {
+        font: { sz: 10 },
+        fill: { fgColor: { rgb: isEven ? "FFFFFF" : "D1FAE5" } }, // Alternating white and light green
+        alignment: {
+          horizontal: C === 0 ? "center" : C === 1 ? "left" : "right",
+          vertical: "center",
+        },
+        border: {
+          top: { style: "thin", color: { rgb: "E5E7EB" } },
+          bottom: { style: "thin", color: { rgb: "E5E7EB" } },
+          left: { style: "thin", color: { rgb: "E5E7EB" } },
+          right: { style: "thin", color: { rgb: "E5E7EB" } },
+        },
+      };
+    }
+  }
 
   // Add worksheet to workbook
   XLSX.utils.book_append_sheet(workbook, worksheet, "Income Report");
