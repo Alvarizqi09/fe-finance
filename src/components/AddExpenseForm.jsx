@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Input from "./Input";
+import Select from "./Select";
 import EmojiPickerPopup from "./EmojiPickerPopup";
+import { EXPENSE_SOURCES } from "../utils/data";
 
 const AddExpenseForm = ({ onAddExpense }) => {
   const [expense, setExpense] = useState({
@@ -20,15 +22,13 @@ const AddExpenseForm = ({ onAddExpense }) => {
         icon={expense.icon}
         onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
       />
-      <Input
+      <Select
         value={expense.source}
         onChange={(e) => handleChange("source", e.target.value)}
         label="Source"
-        placeholder="Freelance, Gaji, dan lainnya"
-        type="text"
+        placeholder="Pilih kategori expense"
+        options={EXPENSE_SOURCES}
         textColor="text-white"
-        className="bg-gray-700 border border-gray-600 rounded-md p-2"
-        placeholderColor="placeholder-white"
       />
       <Input
         value={expense.amount}
@@ -38,7 +38,6 @@ const AddExpenseForm = ({ onAddExpense }) => {
         type="number"
         textColor="text-white"
         placeholderColor="placeholder-white"
-        className="bg-gray-700 border border-gray-600 rounded-md p-2"
       />
       <Input
         value={expense.date}
@@ -47,7 +46,6 @@ const AddExpenseForm = ({ onAddExpense }) => {
         type="date"
         placeholder=""
         textColor="text-white"
-        className="bg-gray-700 border border-gray-600 rounded-md p-2"
       />
       <div className="flex justify-end mt-6">
         <button

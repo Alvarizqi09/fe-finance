@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Input from "./Input";
+import Select from "./Select";
 import EmojiPickerPopup from "./EmojiPickerPopup";
+import { INCOME_SOURCES } from "../utils/data";
 
 const AddIncomeForm = ({ onAddIncome }) => {
   const [income, setIncome] = useState({
@@ -20,14 +22,13 @@ const AddIncomeForm = ({ onAddIncome }) => {
         icon={income.icon}
         onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
       />
-      <Input
+      <Select
         value={income.source}
         onChange={(e) => handleChange("source", e.target.value)}
         label="Source"
-        placeholder="Freelance, Gaji, dan lainnya"
-        type="text"
+        placeholder="Pilih sumber income"
+        options={INCOME_SOURCES}
         textColor="text-white"
-        placeholderColor="placeholder-white"
       />
       <Input
         value={income.amount}
