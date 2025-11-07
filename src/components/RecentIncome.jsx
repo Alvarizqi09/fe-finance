@@ -22,7 +22,6 @@ const RecentIncome = ({ data, onSeeMore }) => {
             date={moment(item.date).format("DD MMM YYYY")}
             amount={item.amount}
             type="income"
-            hideDeleteBtn
           />
         ))}
       </div>
