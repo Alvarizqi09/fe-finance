@@ -20,7 +20,7 @@ const Select = ({
           onChange={(e) => onChange(e)}
           className={
             className ||
-            `flex-1 bg-gray-700 outline-none ${
+            `flex-1 bg-transparent outline-none ${
               textColor || "text-gray-700"
             } font-medium cursor-pointer`
           }
