@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import IncomeList from "../../components/IncomeList";
 import DeleteAlert from "../../components/DeleteAlert";
 import { IncomePageSkeleton } from "../../components/SkeletonLoading";
+import { generateIncomeExcelReport } from "../../utils/excelGenerator";
 
 export const Income = () => {
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false);
@@ -90,22 +91,14 @@ export const Income = () => {
 
   const handleDownloadIncomeReport = async () => {
     try {
-      const response = await axiosInstance.get(
-        `${API_PATHS.INCOME.DOWNLOAD_INCOME}`,
-        {
-          responseType: "blob", // Important for downloading files
-        }
-      );
+      if (incomeData.length === 0) {
+        toast.error("No income data available to download");
+        return;
+      }
 
-      // Create a URL for the downloaded file
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "income_report.xlsx"); // Set the file name
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      // Generate Excel report using the new utility function
+      const fileName = generateIncomeExcelReport(incomeData, "Income_Report");
+      toast.success(`Report downloaded successfully: ${fileName}`);
     } catch (error) {
       console.error("Error downloading income report:", error);
       toast.error("Failed to download income report. Please try again.");

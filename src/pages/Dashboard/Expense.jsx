@@ -9,6 +9,7 @@ import AddExpenseForm from "../../components/AddExpenseForm";
 import DeleteAlert from "../../components/DeleteAlert";
 import ExpenseOverview from "../../components/ExpenseOverview";
 import ExpenseList from "../../components/ExpenseList";
+import { generateExpenseExcelReport } from "../../utils/excelGenerator";
 
 const Expense = () => {
   const [loading, setLoading] = useState(false);
@@ -103,22 +104,14 @@ const Expense = () => {
   }
   const handleDownloadExpenseReport = async () => {
     try {
-      const response = await axiosInstance.get(
-        `${API_PATHS.EXPENSE.DOWNLOAD_EXPENSE}`,
-        {
-          responseType: "blob", // Important for downloading files
-        }
-      );
+      if (expenseData.length === 0) {
+        toast.error("No expense data available to download");
+        return;
+      }
 
-      // Create a URL for the downloaded file
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "expense_report.xlsx"); // Set the file name
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      // Generate Excel report using the new utility function
+      const fileName = generateExpenseExcelReport(expenseData, "Expense_Report");
+      toast.success(`Report downloaded successfully: ${fileName}`);
     } catch (error) {
       console.error("Error downloading expense report:", error);
       toast.error("Failed to download expense report. Please try again.");
