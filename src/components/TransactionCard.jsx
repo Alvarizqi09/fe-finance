@@ -40,7 +40,7 @@ const TransactionCard = ({
 
         <div className="mt-1 flex items-center gap-3">
           <button
-            className="text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 cursor-pointer"
+            className="text-gray-500 hover:text-red-500 cursor-pointer"
             onClick={onDelete}
           >
             <LuTrash2 size={18} />
