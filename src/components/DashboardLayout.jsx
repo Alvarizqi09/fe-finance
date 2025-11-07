@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../context/UserContextObject";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import Footer from "./Footer";
 
 const DashboardLayout = ({ children, activeMenu }) => {
   const { user } = useContext(UserContext);
@@ -37,7 +36,6 @@ const DashboardLayout = ({ children, activeMenu }) => {
         </div>
         <div className="flex-1 min-w-0 flex flex-col">
           <div className="flex-1 px-3 sm:px-4 md:px-5 py-4">{children}</div>
-          <Footer />
         </div>
       </div>
     </div>
