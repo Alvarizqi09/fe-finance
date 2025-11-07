@@ -64,6 +64,18 @@ const Sidebar = ({ activeMenu }) => {
           </button>
         ))}
       </div>
+
+      {/* Logo at bottom */}
+      <div className="mt-auto pt-6 sm:pt-8 flex justify-center items-center">
+        <img
+          src="/logo-transparent.png"
+          alt="Finance App Logo"
+          className="w-32 sm:w-40 h-auto opacity-80 hover:opacity-100 transition-opacity"
+          onError={(e) => {
+            e.target.style.display = "none";
+          }}
+        />
+      </div>
     </div>
   );
 };
