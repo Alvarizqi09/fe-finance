@@ -84,7 +84,7 @@ export const generateExpenseExcelReport = (
 
   // Set column widths - increased for better visibility
   worksheet["!cols"] = [
-    { wch: 8 }, // No.
+    { wch: 22 }, // No. / Summary Labels (expanded for "Total Transactions:")
     { wch: 30 }, // Source
     { wch: 20 }, // Amount
     { wch: 15 }, // Date
@@ -293,7 +293,7 @@ export const generateIncomeExcelReport = (
 
   // Set column widths - increased for better visibility
   worksheet["!cols"] = [
-    { wch: 8 }, // No.
+    { wch: 22 }, // No. / Summary Labels (expanded for "Total Transactions:")
     { wch: 30 }, // Source
     { wch: 20 }, // Amount
     { wch: 15 }, // Date
