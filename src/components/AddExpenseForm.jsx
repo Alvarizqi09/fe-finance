@@ -28,8 +28,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
         label="Source"
         placeholder="Pilih kategori expense"
         options={EXPENSE_SOURCES}
-        textColor="text-white"
-        optionClassName="bg-gray-700 text-white hover:bg-emerald-600 focus:bg-emerald-700 transition-colors"
+        optionClassName="bg-gray-700 hover:bg-emerald-600 focus:bg-emerald-700 transition-colors"
       />
       <Input
         value={expense.amount}
@@ -37,7 +36,6 @@ const AddExpenseForm = ({ onAddExpense }) => {
         label="Amount"
         placeholder="Enter amount"
         type="number"
-        textColor="text-white"
         placeholderColor="placeholder-white"
       />
       <Input
@@ -46,7 +44,6 @@ const AddExpenseForm = ({ onAddExpense }) => {
         label="Date"
         type="date"
         placeholder=""
-        textColor="text-white"
       />
       <div className="flex justify-end mt-6">
         <button
