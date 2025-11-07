@@ -7,27 +7,54 @@ import { addThounsandSeparators } from "./helper";
  * @param {Array} expenseData - Array of expense objects
  * @param {string} fileName - Name of the file to download
  */
-export const generateExpenseExcelReport = (expenseData, fileName = "Expense_Report") => {
+export const generateExpenseExcelReport = (
+  expenseData,
+  fileName = "Expense_Report"
+) => {
   // Prepare data for Excel
   const worksheetData = [];
 
   // Add title row
   worksheetData.push(["EXPENSE REPORT"]);
-  worksheetData.push([`Generated on: ${moment().format("DD MMMM YYYY, HH:mm")}`]);
+  worksheetData.push([
+    `Generated on: ${moment().format("DD MMMM YYYY, HH:mm")}`,
+  ]);
   worksheetData.push([]); // Empty row for spacing
 
   // Calculate summary statistics
-  const totalExpense = expenseData.reduce((sum, item) => sum + Number(item.amount), 0);
-  const averageExpense = expenseData.length > 0 ? totalExpense / expenseData.length : 0;
-  const maxExpense = expenseData.length > 0 ? Math.max(...expenseData.map(item => Number(item.amount))) : 0;
-  const minExpense = expenseData.length > 0 ? Math.min(...expenseData.map(item => Number(item.amount))) : 0;
+  const totalExpense = expenseData.reduce(
+    (sum, item) => sum + Number(item.amount),
+    0
+  );
+  const averageExpense =
+    expenseData.length > 0 ? totalExpense / expenseData.length : 0;
+  const maxExpense =
+    expenseData.length > 0
+      ? Math.max(...expenseData.map((item) => Number(item.amount)))
+      : 0;
+  const minExpense =
+    expenseData.length > 0
+      ? Math.min(...expenseData.map((item) => Number(item.amount)))
+      : 0;
 
   // Add summary section
   worksheetData.push(["SUMMARY"]);
-  worksheetData.push(["Total Expenses:", `Rp ${addThounsandSeparators(totalExpense)}`]);
-  worksheetData.push(["Average Expense:", `Rp ${addThounsandSeparators(averageExpense.toFixed(2))}`]);
-  worksheetData.push(["Highest Expense:", `Rp ${addThounsandSeparators(maxExpense)}`]);
-  worksheetData.push(["Lowest Expense:", `Rp ${addThounsandSeparators(minExpense)}`]);
+  worksheetData.push([
+    "Total Expenses:",
+    `Rp ${addThounsandSeparators(totalExpense)}`,
+  ]);
+  worksheetData.push([
+    "Average Expense:",
+    `Rp ${addThounsandSeparators(averageExpense.toFixed(2))}`,
+  ]);
+  worksheetData.push([
+    "Highest Expense:",
+    `Rp ${addThounsandSeparators(maxExpense)}`,
+  ]);
+  worksheetData.push([
+    "Lowest Expense:",
+    `Rp ${addThounsandSeparators(minExpense)}`,
+  ]);
   worksheetData.push(["Total Transactions:", expenseData.length]);
   worksheetData.push([]); // Empty row for spacing
 
@@ -57,12 +84,12 @@ export const generateExpenseExcelReport = (expenseData, fileName = "Expense_Repo
 
   // Set column widths
   worksheet["!cols"] = [
-    { wch: 6 },  // No.
+    { wch: 6 }, // No.
     { wch: 25 }, // Source
     { wch: 18 }, // Amount
     { wch: 15 }, // Date
     { wch: 12 }, // Month
-    { wch: 8 },  // Year
+    { wch: 8 }, // Year
   ];
 
   // Merge cells for title
@@ -90,27 +117,54 @@ export const generateExpenseExcelReport = (expenseData, fileName = "Expense_Repo
  * @param {Array} incomeData - Array of income objects
  * @param {string} fileName - Name of the file to download
  */
-export const generateIncomeExcelReport = (incomeData, fileName = "Income_Report") => {
+export const generateIncomeExcelReport = (
+  incomeData,
+  fileName = "Income_Report"
+) => {
   // Prepare data for Excel
   const worksheetData = [];
 
   // Add title row
   worksheetData.push(["INCOME REPORT"]);
-  worksheetData.push([`Generated on: ${moment().format("DD MMMM YYYY, HH:mm")}`]);
+  worksheetData.push([
+    `Generated on: ${moment().format("DD MMMM YYYY, HH:mm")}`,
+  ]);
   worksheetData.push([]); // Empty row for spacing
 
   // Calculate summary statistics
-  const totalIncome = incomeData.reduce((sum, item) => sum + Number(item.amount), 0);
-  const averageIncome = incomeData.length > 0 ? totalIncome / incomeData.length : 0;
-  const maxIncome = incomeData.length > 0 ? Math.max(...incomeData.map(item => Number(item.amount))) : 0;
-  const minIncome = incomeData.length > 0 ? Math.min(...incomeData.map(item => Number(item.amount))) : 0;
+  const totalIncome = incomeData.reduce(
+    (sum, item) => sum + Number(item.amount),
+    0
+  );
+  const averageIncome =
+    incomeData.length > 0 ? totalIncome / incomeData.length : 0;
+  const maxIncome =
+    incomeData.length > 0
+      ? Math.max(...incomeData.map((item) => Number(item.amount)))
+      : 0;
+  const minIncome =
+    incomeData.length > 0
+      ? Math.min(...incomeData.map((item) => Number(item.amount)))
+      : 0;
 
   // Add summary section
   worksheetData.push(["SUMMARY"]);
-  worksheetData.push(["Total Income:", `Rp ${addThounsandSeparators(totalIncome)}`]);
-  worksheetData.push(["Average Income:", `Rp ${addThounsandSeparators(averageIncome.toFixed(2))}`]);
-  worksheetData.push(["Highest Income:", `Rp ${addThounsandSeparators(maxIncome)}`]);
-  worksheetData.push(["Lowest Income:", `Rp ${addThounsandSeparators(minIncome)}`]);
+  worksheetData.push([
+    "Total Income:",
+    `Rp ${addThounsandSeparators(totalIncome)}`,
+  ]);
+  worksheetData.push([
+    "Average Income:",
+    `Rp ${addThounsandSeparators(averageIncome.toFixed(2))}`,
+  ]);
+  worksheetData.push([
+    "Highest Income:",
+    `Rp ${addThounsandSeparators(maxIncome)}`,
+  ]);
+  worksheetData.push([
+    "Lowest Income:",
+    `Rp ${addThounsandSeparators(minIncome)}`,
+  ]);
   worksheetData.push(["Total Transactions:", incomeData.length]);
   worksheetData.push([]); // Empty row for spacing
 
@@ -140,12 +194,12 @@ export const generateIncomeExcelReport = (incomeData, fileName = "Income_Report"
 
   // Set column widths
   worksheet["!cols"] = [
-    { wch: 6 },  // No.
+    { wch: 6 }, // No.
     { wch: 25 }, // Source
     { wch: 18 }, // Amount
     { wch: 15 }, // Date
     { wch: 12 }, // Month
-    { wch: 8 },  // Year
+    { wch: 8 }, // Year
   ];
 
   // Merge cells for title

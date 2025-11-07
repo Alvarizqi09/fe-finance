@@ -110,7 +110,10 @@ const Expense = () => {
       }
 
       // Generate Excel report using the new utility function
-      const fileName = generateExpenseExcelReport(expenseData, "Expense_Report");
+      const fileName = generateExpenseExcelReport(
+        expenseData,
+        "Expense_Report"
+      );
       toast.success(`Report downloaded successfully: ${fileName}`);
     } catch (error) {
       console.error("Error downloading expense report:", error);
