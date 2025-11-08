@@ -77,8 +77,9 @@ const BoxFinanceIllustration = () => {
 
       {/* Header Text */}
       <text
-        x="40"
+        x="200"
         y="45"
+        textAnchor="middle"
         className="text-sm font-semibold fill-white transition-colors duration-300"
         style={{
           fontFamily: "system-ui, sans-serif",
@@ -177,67 +178,70 @@ const BoxFinanceIllustration = () => {
         className="fill-emerald-500 dark:fill-emerald-600 transition-colors duration-300"
       />
 
-      {/* Financial Indicators */}
-      {/* Income Indicator */}
-      <circle
-        cx="50"
-        cy="220"
-        r="8"
-        className="fill-emerald-400 dark:fill-emerald-500 transition-colors duration-300"
-      />
-      <text
-        x="65"
-        y="225"
-        className="text-xs fill-gray-700 dark:fill-gray-300 transition-colors duration-300"
-        style={{ fontFamily: "system-ui, sans-serif", fontSize: "12px" }}
-      >
-        Income
-      </text>
+      {/* Financial Indicators - Diatur ulang untuk menghindari tabrakan */}
+      <g className="transition-colors duration-300">
+        {/* Income Indicator */}
+        <circle
+          cx="60"
+          cy="230"
+          r="6"
+          className="fill-emerald-400 dark:fill-emerald-500"
+        />
+        <text
+          x="75"
+          y="233"
+          className="text-xs fill-gray-700 dark:fill-gray-300"
+          style={{ fontFamily: "system-ui, sans-serif", fontSize: "11px" }}
+        >
+          Income
+        </text>
 
-      {/* Expense Indicator */}
-      <circle
-        cx="150"
-        cy="220"
-        r="8"
-        className="fill-teal-400 dark:fill-teal-500 transition-colors duration-300"
-      />
-      <text
-        x="165"
-        y="225"
-        className="text-xs fill-gray-700 dark:fill-gray-300 transition-colors duration-300"
-        style={{ fontFamily: "system-ui, sans-serif", fontSize: "12px" }}
-      >
-        Expense
-      </text>
+        {/* Expense Indicator */}
+        <circle
+          cx="150"
+          cy="230"
+          r="6"
+          className="fill-teal-400 dark:fill-teal-500"
+        />
+        <text
+          x="165"
+          y="233"
+          className="text-xs fill-gray-700 dark:fill-gray-300"
+          style={{ fontFamily: "system-ui, sans-serif", fontSize: "11px" }}
+        >
+          Expense
+        </text>
 
-      {/* Savings Indicator */}
-      <circle
-        cx="250"
-        cy="220"
-        r="8"
-        className="fill-amber-400 dark:fill-amber-500 transition-colors duration-300"
-      />
-      <text
-        x="265"
-        y="225"
-        className="text-xs fill-gray-700 dark:fill-gray-300 transition-colors duration-300"
-        style={{ fontFamily: "system-ui, sans-serif", fontSize: "12px" }}
-      >
-        Savings
-      </text>
+        {/* Savings Indicator */}
+        <circle
+          cx="240"
+          cy="230"
+          r="6"
+          className="fill-amber-400 dark:fill-amber-500"
+        />
+        <text
+          x="255"
+          y="233"
+          className="text-xs fill-gray-700 dark:fill-gray-300"
+          style={{ fontFamily: "system-ui, sans-serif", fontSize: "11px" }}
+        >
+          Savings
+        </text>
+      </g>
 
-      {/* Stats Badge */}
+      {/* Stats Badge - Dipindah ke posisi yang tidak bertabrakan */}
       <rect
         x="300"
-        y="200"
-        width="80"
-        height="40"
-        rx="8"
+        y="190"
+        width="70"
+        height="32"
+        rx="6"
         className="fill-emerald-500/20 dark:fill-emerald-600/20 transition-colors duration-300"
       />
       <text
-        x="310"
-        y="220"
+        x="335"
+        y="205"
+        textAnchor="middle"
         className="text-xs font-bold fill-emerald-700 dark:fill-emerald-400 transition-colors duration-300"
         style={{
           fontFamily: "system-ui, sans-serif",
@@ -248,10 +252,11 @@ const BoxFinanceIllustration = () => {
         +12.5%
       </text>
       <text
-        x="310"
-        y="235"
+        x="335"
+        y="218"
+        textAnchor="middle"
         className="text-xs fill-emerald-600 dark:fill-emerald-300 transition-colors duration-300"
-        style={{ fontFamily: "system-ui, sans-serif", fontSize: "10px" }}
+        style={{ fontFamily: "system-ui, sans-serif", fontSize: "9px" }}
       >
         This Month
       </text>
