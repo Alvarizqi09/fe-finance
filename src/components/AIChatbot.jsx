@@ -1,9 +1,12 @@
+// components/AIChatbot.jsx (updated)
 import React, { useState, useRef, useEffect } from "react";
 import { IoClose, IoSend } from "react-icons/io5";
 import { BsRobot } from "react-icons/bs";
 import { BiLoaderAlt } from "react-icons/bi";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATHS } from "../utils/apiPaths";
+import MarkdownRenderer from "./MarkdownRenderer";
+// Import the new component
 
 const AIChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -147,9 +150,13 @@ const AIChatbot = () => {
                       : "bg-white text-gray-800 rounded-bl-none shadow-md"
                   }`}
                 >
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                    {message.text}
-                  </p>
+                  {message.sender === "bot" ? (
+                    <MarkdownRenderer text={message.text} />
+                  ) : (
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                      {message.text}
+                    </p>
+                  )}
                   <p
                     className={`text-xs mt-1 ${
                       message.sender === "user"

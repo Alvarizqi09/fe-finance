@@ -122,3 +122,34 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Tambahkan di file CSS global atau di komponen */
+.markdown-content {
+  line-height: 1.6;
+}
+
+.markdown-content strong {
+  font-weight: 600;
+  color: #047857; /* emerald-700 */
+}
+
+.markdown-content em {
+  font-style: italic;
+  color: #4b5563; /* gray-600 */
+}
+
+.markdown-content ul {
+  list-style-type: disc;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content ol {
+  list-style-type: decimal;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-content li {
+  margin-bottom: 0.25rem;
+}
