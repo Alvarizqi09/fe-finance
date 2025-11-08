@@ -87,7 +87,6 @@ body {
 /* Card styles */
 .card {
   @apply px-6 py-10 rounded-2xl shadow-lg border border-white/50 bg-white/40 backdrop-blur-xl;
-  @apply dark:bg-gray-800/80 dark:border-gray-700/60;
 }
 
 .card-btn {
