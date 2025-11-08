@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
 import EmojiPickerPopup from "./EmojiPickerPopup";
-import { INCOME_SOURCES } from "../utils/data";
+import { EXPENSE_SOURCES } from "../utils/data";
 
 const AddExpenseForm = ({ onAddExpense }) => {
   const [expense, setExpense] = useState({
@@ -17,7 +17,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
   };
 
   return (
-    <div className="p-4 dark:bg-gray-800/50 dark:rounded-xl">
+    <div className="p-4 bg-white/80 rounded-2xl shadow-lg border border-gray-200/50 dark:bg-gray-800/50 dark:border-gray-700/50">
       <EmojiPickerPopup
         icon={expense.icon}
         onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
@@ -27,7 +27,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
         onChange={(e) => handleChange("source", e.target.value)}
         label="Source"
         placeholder="Pilih sumber pengeluaran"
-        options={INCOME_SOURCES}
+        options={EXPENSE_SOURCES}
         optionClassName="bg-white dark:bg-gray-700 hover:bg-emerald-600 focus:bg-emerald-700 transition-colors"
       />
       <Input
@@ -43,7 +43,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
         onChange={(e) => handleChange("date", e.target.value)}
         label="Date"
         type="date"
-        placeholder=""
+        placeholder="Select date"
       />
       <div className="flex justify-end mt-6">
         <button

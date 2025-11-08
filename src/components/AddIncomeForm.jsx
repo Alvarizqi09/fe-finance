@@ -17,7 +17,7 @@ const AddIncomeForm = ({ onAddIncome }) => {
   };
 
   return (
-    <div className="p-4 dark:bg-gray-800/50 dark:rounded-xl">
+    <div className="p-4 bg-white/80 rounded-2xl shadow-lg border border-gray-200/50 dark:bg-gray-800/50 dark:border-gray-700/50">
       <EmojiPickerPopup
         icon={income.icon}
         onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
@@ -43,7 +43,7 @@ const AddIncomeForm = ({ onAddIncome }) => {
         onChange={(e) => handleChange("date", e.target.value)}
         label="Date"
         type="date"
-        placeholder=""
+        placeholder="Select date"
       />
       <div className="flex justify-end mt-6">
         <button

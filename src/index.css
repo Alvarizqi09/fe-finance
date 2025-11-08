@@ -42,29 +42,49 @@ body {
   }
 }
 
+/* Perbaikan visibility form di light mode */
 .input-box {
-  @apply w-full flex justify-between gap-3 text-sm text-gray-700 bg-white/40 backdrop-blur-xl rounded-2xl px-4 py-3 mb-4 mt-3 border border-white/50 outline-none focus:bg-white/60 focus:border-emerald-300/50 focus:ring-2 focus:ring-emerald-200/30 transition-all duration-300 shadow-lg shadow-green-100/20;
+  @apply w-full flex justify-between gap-3 text-sm text-gray-700 bg-white/80 backdrop-blur-xl rounded-2xl px-4 py-3 mb-4 mt-3 border border-gray-200/70 outline-none focus:bg-white/90 focus:border-emerald-300/70 focus:ring-2 focus:ring-emerald-200/50 transition-all duration-300 shadow-lg shadow-green-100/30;
   @apply dark:bg-gray-700/40 dark:border-gray-600/50 dark:text-gray-100 dark:shadow-black/10 dark:focus:bg-gray-600/60 dark:focus:border-emerald-400/50 dark:focus:ring-emerald-300/30;
 }
+
 .btn-primary {
   @apply w-full bg-gradient-to-r from-emerald-400 to-teal-500 text-white shadow-lg shadow-emerald-200/40 p-[14px] rounded-2xl my-2 hover:from-emerald-500 hover:to-teal-600 hover:shadow-xl hover:shadow-emerald-300/50 backdrop-blur-sm transition-all duration-300 transform hover:scale-[1.02] font-semibold text-base;
 }
 
-/* Dark mode untuk date input */
-input[type="date"] {
-  @apply dark:text-gray-100;
+/* Placeholder styling untuk date input */
+.input-box input[type="date"]:invalid {
+  color: transparent;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.6);
+.input-box input[type="date"]:focus {
+  color: inherit;
+}
+
+/* Style untuk calendar icon di date input */
+.input-box input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  cursor: pointer;
+}
+
+.input-box input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  filter: invert(0.3);
 }
 
 @media (prefers-color-scheme: dark) {
-  input[type="date"]::-webkit-calendar-picker-indicator {
+  .input-box input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(0.8);
+  }
+
+  .input-box input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    filter: invert(1);
   }
 }
 
+/* Background form yang lebih solid di light mode */
+.form-container {
+  @apply bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/70;
+}
 /* Dark mode untuk select options */
 select option {
   @apply dark:bg-gray-700 dark:text-white;
