@@ -16,7 +16,9 @@ import { Toaster } from "react-hot-toast";
 import AIChatbot from "./components/AIChatbot";
 
 function App() {
-  const isAuthenticated = !!localStorage.getItem("token");
+  // Only show AIChatbot if not on /login or /signup
+  const currentPath = window.location.pathname;
+  const showChatbot = currentPath !== "/login" && currentPath !== "/signup";
   return (
     <UserProvider>
       <div>
@@ -41,8 +43,8 @@ function App() {
         }}
       />
 
-      {/* AI Chatbot - Only visible if authenticated */}
-      {isAuthenticated && <AIChatbot />}
+      {/* AI Chatbot - Only visible if not on login/signup */}
+      {showChatbot && <AIChatbot />}
     </UserProvider>
   );
 }
