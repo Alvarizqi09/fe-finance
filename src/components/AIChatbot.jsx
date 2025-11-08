@@ -1,4 +1,4 @@
-// components/AIChatbot.jsx (updated)
+// components/AIChatbot.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { IoClose, IoSend } from "react-icons/io5";
 import { BsRobot } from "react-icons/bs";
@@ -6,7 +6,6 @@ import { BiLoaderAlt } from "react-icons/bi";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATHS } from "../utils/apiPaths";
 import MarkdownRenderer from "./MarkdownRenderer";
-// Import the new component
 
 const AIChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,27 +43,47 @@ const AIChatbot = () => {
 
   const callAIAPI = async (userMessage) => {
     try {
-      const response = await axiosInstance.post(API_PATHS.AI.CHAT, {
-        message: userMessage,
-      });
+      const response = await axiosInstance.post(
+        API_PATHS.AI.CHAT,
+        {
+          message: userMessage,
+        },
+        {
+          timeout: 60000, // 60 seconds timeout for AI endpoint
+        }
+      );
 
       return (
         response.data.response ||
-        "I apologize, but I couldn't process that request."
+        "Maaf, saya tidak bisa memproses permintaan tersebut."
       );
     } catch (error) {
       console.error("AI API Error:", error);
-      return "I'm having trouble connecting right now. Please try again later.";
+
+      // Specific error messages
+      if (error.code === "ECONNABORTED") {
+        return "Maaf, permintaan memakan waktu terlalu lama. Silakan coba lagi dengan pertanyaan yang lebih singkat.";
+      } else if (error.response?.status === 500) {
+        return "Terjadi kesalahan di server. Mohon coba beberapa saat lagi.";
+      } else if (error.response?.status === 401) {
+        return "Sesi Anda telah berakhir. Silakan login kembali.";
+      } else if (!navigator.onLine) {
+        return "Tidak ada koneksi internet. Periksa koneksi Anda dan coba lagi.";
+      }
+
+      return "Maaf, terjadi kesalahan. Silakan coba lagi dalam beberapa saat.";
     }
   };
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
 
+    const userMessageText = inputMessage.trim();
+
     // Add user message
     const userMessage = {
       id: Date.now(),
-      text: inputMessage,
+      text: userMessageText,
       sender: "user",
       timestamp: new Date(),
     };
@@ -73,19 +92,34 @@ const AIChatbot = () => {
     setInputMessage("");
     setIsTyping(true);
 
-    // Call AI API through backend
-    const botResponseText = await callAIAPI(inputMessage);
+    try {
+      // Call AI API through backend
+      const botResponseText = await callAIAPI(userMessageText);
 
-    // Add bot response
-    const botMessage = {
-      id: Date.now() + 1,
-      text: botResponseText,
-      sender: "bot",
-      timestamp: new Date(),
-    };
+      // Add bot response
+      const botMessage = {
+        id: Date.now() + 1,
+        text: botResponseText,
+        sender: "bot",
+        timestamp: new Date(),
+      };
 
-    setMessages((prev) => [...prev, botMessage]);
-    setIsTyping(false);
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error("Message send error:", error);
+
+      // Add error message
+      const errorMessage = {
+        id: Date.now() + 1,
+        text: "Maaf, terjadi kesalahan yang tidak terduga. Silakan coba lagi.",
+        sender: "bot",
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -177,16 +211,21 @@ const AIChatbot = () => {
             {isTyping && (
               <div className="flex justify-start">
                 <div className="bg-white rounded-2xl rounded-bl-none shadow-md px-4 py-3">
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                      style={{ animationDelay: "0.1s" }}
-                    ></div>
-                    <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
-                      style={{ animationDelay: "0.2s" }}
-                    ></div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "0.1s" }}
+                      ></div>
+                      <div
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "0.2s" }}
+                      ></div>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      Analyzing your finances...
+                    </span>
                   </div>
                 </div>
               </div>
@@ -204,7 +243,8 @@ const AIChatbot = () => {
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyDown={handleKeyPress}
                 placeholder="Ask me anything about your finances"
-                className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 resize-none transition-all scrollbar-hide"
+                disabled={isTyping}
+                className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 resize-none transition-all scrollbar-hide disabled:bg-gray-100 disabled:cursor-not-allowed"
                 rows="1"
                 style={{
                   minHeight: "44px",
@@ -228,7 +268,9 @@ const AIChatbot = () => {
               </button>
             </div>
             <p className="text-xs text-gray-400 mt-2 text-center">
-              Press Enter to send, Shift + Enter for new line
+              {isTyping
+                ? "Please wait while I analyze your data..."
+                : "Press Enter to send, Shift + Enter for new line"}
             </p>
           </div>
         </div>
