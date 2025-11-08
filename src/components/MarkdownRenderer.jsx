@@ -4,7 +4,7 @@ import React from "react";
 const MarkdownRenderer = ({ text }) => {
   if (!text) return null;
 
-  // Ultra-aggressive client-side cleaning
+  // Clean text function
   const cleanText = (content) => {
     if (!content) return "";
 
@@ -25,26 +25,35 @@ const MarkdownRenderer = ({ text }) => {
       cleaned = cleaned.replace(/(\d+)\s*\1\b/g, "$1");
     }
 
-    return cleaned.replace(/\s+/g, " ").trim();
+    // Remove italic markers (single asterisks)
+    cleaned = cleaned.replace(/(?<!\*)\*(?!\*)([^*]+?)(?<!\*)\*(?!\*)/g, "$1");
+
+    // Clean up multiple spaces
+    cleaned = cleaned.replace(/\s+/g, " ");
+
+    return cleaned.trim();
   };
 
-  // Process inline formatting - ONLY BOLD (no italic)
+  // Process inline formatting - ONLY BOLD
   const processInlineFormatting = (text) => {
     const cleanedText = cleanText(text);
     const parts = [];
     let currentIndex = 0;
 
     // Parse ONLY bold (**text**)
-    const pattern = /\*\*([^*]+)\*\*/g;
+    const pattern = /\*\*([^*]+?)\*\*/g;
     let match;
 
     while ((match = pattern.exec(cleanedText)) !== null) {
       // Add text before the match
       if (match.index > currentIndex) {
-        parts.push({
-          type: "text",
-          content: cleanedText.slice(currentIndex, match.index),
-        });
+        const beforeText = cleanedText.slice(currentIndex, match.index);
+        if (beforeText) {
+          parts.push({
+            type: "text",
+            content: beforeText,
+          });
+        }
       }
 
       // Add bold text
@@ -58,10 +67,13 @@ const MarkdownRenderer = ({ text }) => {
 
     // Add remaining text
     if (currentIndex < cleanedText.length) {
-      parts.push({
-        type: "text",
-        content: cleanedText.slice(currentIndex),
-      });
+      const remainingText = cleanedText.slice(currentIndex);
+      if (remainingText) {
+        parts.push({
+          type: "text",
+          content: remainingText,
+        });
+      }
     }
 
     // If no formatting found, return plain text
@@ -81,7 +93,7 @@ const MarkdownRenderer = ({ text }) => {
           </strong>
         );
       }
-      return part.content;
+      return <span key={`text-${index}`}>{part.content}</span>;
     });
   };
 
@@ -97,99 +109,64 @@ const MarkdownRenderer = ({ text }) => {
       );
     }
 
+    // Split by newlines and process
     const lines = cleanedContent.split("\n");
     const elements = [];
 
-    let currentList = null;
-    let listItems = [];
-    let listType = null;
-
-    const closeList = () => {
-      if (currentList !== null && listItems.length > 0) {
-        if (listType === "ul") {
-          elements.push(
-            <ul key={`ul-${currentList}`} className="space-y-3 mb-4">
-              {listItems}
-            </ul>
-          );
-        } else if (listType === "ol") {
-          elements.push(
-            <ol key={`ol-${currentList}`} className="space-y-3 mb-4">
-              {listItems}
-            </ol>
-          );
-        }
-        listItems = [];
-        currentList = null;
-        listType = null;
-      }
-    };
-
     lines.forEach((line, index) => {
       const trimmedLine = line.trim();
+
+      // Skip empty lines
       if (trimmedLine === "") {
-        closeList();
         return;
       }
 
-      // Handle bullet points
+      // Handle bullet points (• or -)
       if (trimmedLine.startsWith("•") || trimmedLine.startsWith("-")) {
-        if (currentList === null || listType !== "ul") {
-          closeList();
-          currentList = index;
-          listType = "ul";
-        }
-        const listItem = processInlineFormatting(
-          trimmedLine.replace(/^[•-]\s*/, "")
-        );
-        listItems.push(
-          <li key={`li-${index}`} className="mb-3 leading-relaxed">
-            <span className="inline-block">
-              <span className="text-emerald-600 font-bold mr-2">•</span>
-              {listItem}
-            </span>
-          </li>
+        const content = trimmedLine.replace(/^[•-]\s*/, "");
+        const processedContent = processInlineFormatting(content);
+
+        elements.push(
+          <div key={`bullet-${index}`} className="mb-4">
+            <div className="flex items-start gap-2">
+              <span className="text-emerald-600 font-bold text-base mt-0.5 flex-shrink-0">
+                •
+              </span>
+              <div className="flex-1 text-sm leading-relaxed">
+                {processedContent}
+              </div>
+            </div>
+          </div>
         );
         return;
       }
 
       // Handle numbered lists
       if (/^\d+\.\s/.test(trimmedLine)) {
-        if (currentList === null || listType !== "ol") {
-          closeList();
-          currentList = index;
-          listType = "ol";
-        }
-        const listItem = processInlineFormatting(
-          trimmedLine.replace(/^\d+\.\s*/, "")
-        );
-        listItems.push(
-          <li key={`li-${index}`} className="mb-3 leading-relaxed ml-5">
-            {listItem}
-          </li>
+        const content = trimmedLine.replace(/^\d+\.\s*/, "");
+        const processedContent = processInlineFormatting(content);
+
+        elements.push(
+          <div key={`number-${index}`} className="mb-4 ml-5">
+            <div className="text-sm leading-relaxed">{processedContent}</div>
+          </div>
         );
         return;
       }
 
-      closeList();
-
       // Regular paragraph
       elements.push(
-        <p key={`p-${index}`} className="mb-3 leading-relaxed">
+        <p key={`p-${index}`} className="mb-4 text-sm leading-relaxed">
           {processInlineFormatting(trimmedLine)}
         </p>
       );
     });
 
-    closeList();
-
     return elements;
   };
 
   return (
-    <div className="markdown-content text-sm leading-relaxed text-gray-800">
-      {renderMarkdown(text)}
-    </div>
+    <div className="markdown-content text-gray-800">{renderMarkdown(text)}</div>
   );
 };
 
