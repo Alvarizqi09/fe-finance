@@ -10,8 +10,10 @@ import DeleteAlert from "../../components/DeleteAlert";
 import ExpenseOverview from "../../components/ExpenseOverview";
 import ExpenseList from "../../components/ExpenseList";
 import { generateExpenseExcelReport } from "../../utils/excelGenerator";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Expense = () => {
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [expenseData, setExpenseData] = useState([]);
   const [openDeleteAlert, setOpenDeleteAlert] = useState({
@@ -69,6 +71,8 @@ const Expense = () => {
 
       setOpenAddExpenseModal(false);
       fetchExpenseData();
+      // Invalidate dashboard data to refresh it when user navigates back
+      queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
       toast.success("Expense added successfully");
     } catch (error) {
       console.error("Error adding expense:", error);
@@ -83,6 +87,8 @@ const Expense = () => {
       setOpenDeleteAlert({ show: false, data: null });
       toast.success("Expense deleted successfully");
       fetchExpenseData();
+      // Invalidate dashboard data to refresh it when user navigates back
+      queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
     } catch (error) {
       console.error("Error deleting expense:", error);
       toast.error("Failed to delete expense. Please try again.");
@@ -93,6 +99,7 @@ const Expense = () => {
     fetchExpenseData();
 
     return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {

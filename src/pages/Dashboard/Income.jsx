@@ -10,8 +10,10 @@ import IncomeList from "../../components/IncomeList";
 import DeleteAlert from "../../components/DeleteAlert";
 import { IncomePageSkeleton } from "../../components/SkeletonLoading";
 import { generateIncomeExcelReport } from "../../utils/excelGenerator";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Income = () => {
+  const queryClient = useQueryClient();
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false);
   const [incomeData, setIncomeData] = useState([]);
   const [openDeleteAlert, setOpenDeleteAlert] = useState({
@@ -69,6 +71,8 @@ export const Income = () => {
 
       setOpenAddIncomeModal(false);
       fetchIncomeData();
+      // Invalidate dashboard data to refresh it when user navigates back
+      queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
       toast.success("Income added successfully");
     } catch (error) {
       console.error("Error adding income:", error);
@@ -83,6 +87,8 @@ export const Income = () => {
       setOpenDeleteAlert({ show: false, data: null });
       toast.success("Income deleted successfully");
       fetchIncomeData();
+      // Invalidate dashboard data to refresh it when user navigates back
+      queryClient.invalidateQueries({ queryKey: ["dashboardData"] });
     } catch (error) {
       console.error("Error deleting income:", error);
       toast.error("Failed to delete income. Please try again.");
@@ -109,6 +115,7 @@ export const Income = () => {
     fetchIncomeData();
 
     return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {

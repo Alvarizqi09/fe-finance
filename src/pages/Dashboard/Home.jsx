@@ -29,7 +29,9 @@ const Home = () => {
       );
       return response.data;
     },
-    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
+    staleTime: 0, // Always consider data stale to refetch when needed
+    refetchOnMount: "always", // Always refetch when component mounts
+    refetchOnWindowFocus: true, // Refetch when window is focused
     retry: 2, // Retry failed requests up to 2 times
   });
 
