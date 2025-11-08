@@ -28,15 +28,12 @@ const MarkdownRenderer = ({ text }) => {
     // Remove italic markers (single asterisks)
     cleaned = cleaned.replace(/(?<!\*)\*(?!\*)([^*]+?)(?<!\*)\*(?!\*)/g, "$1");
 
-    // Clean up multiple spaces
-    cleaned = cleaned.replace(/\s+/g, " ");
-
     return cleaned.trim();
   };
 
   // Process inline formatting - ONLY BOLD
   const processInlineFormatting = (text) => {
-    const cleanedText = cleanText(text);
+    const cleanedText = text.trim();
     const parts = [];
     let currentIndex = 0;
 
@@ -97,11 +94,20 @@ const MarkdownRenderer = ({ text }) => {
     });
   };
 
-  // Function to safely render markdown
-  const renderMarkdown = (content) => {
+  // Function to split text by bullet points
+  const splitByBullets = (content) => {
     const cleanedContent = cleanText(content);
 
-    if (!cleanedContent.trim()) {
+    // Split by bullet markers (• or numbered lists)
+    // This regex will split BEFORE each bullet/number
+    const parts = cleanedContent.split(/(?=•|\n•|\s•|^\d+\.|\n\d+\.)/);
+
+    return parts.map((part) => part.trim()).filter((part) => part.length > 0);
+  };
+
+  // Function to safely render markdown
+  const renderMarkdown = (content) => {
+    if (!content || !content.trim()) {
       return (
         <p className="text-gray-600">
           Maaf, terjadi kesalahan dalam menampilkan respons.
@@ -109,21 +115,17 @@ const MarkdownRenderer = ({ text }) => {
       );
     }
 
-    // Split by newlines and process
-    const lines = cleanedContent.split("\n");
+    const parts = splitByBullets(content);
     const elements = [];
 
-    lines.forEach((line, index) => {
-      const trimmedLine = line.trim();
+    parts.forEach((part, index) => {
+      const trimmedPart = part.trim();
 
-      // Skip empty lines
-      if (trimmedLine === "") {
-        return;
-      }
+      if (!trimmedPart) return;
 
       // Handle bullet points (• or -)
-      if (trimmedLine.startsWith("•") || trimmedLine.startsWith("-")) {
-        const content = trimmedLine.replace(/^[•-]\s*/, "");
+      if (trimmedPart.startsWith("•") || trimmedPart.startsWith("-")) {
+        const content = trimmedPart.replace(/^[•-]\s*/, "");
         const processedContent = processInlineFormatting(content);
 
         elements.push(
@@ -132,7 +134,7 @@ const MarkdownRenderer = ({ text }) => {
               <span className="text-emerald-600 font-bold text-base mt-0.5 flex-shrink-0">
                 •
               </span>
-              <div className="flex-1 text-sm leading-relaxed">
+              <div className="flex-1 text-sm leading-relaxed text-gray-800">
                 {processedContent}
               </div>
             </div>
@@ -142,22 +144,33 @@ const MarkdownRenderer = ({ text }) => {
       }
 
       // Handle numbered lists
-      if (/^\d+\.\s/.test(trimmedLine)) {
-        const content = trimmedLine.replace(/^\d+\.\s*/, "");
+      const numberMatch = trimmedPart.match(/^(\d+)\.\s+(.+)/);
+      if (numberMatch) {
+        const content = numberMatch[2];
         const processedContent = processInlineFormatting(content);
 
         elements.push(
-          <div key={`number-${index}`} className="mb-4 ml-5">
-            <div className="text-sm leading-relaxed">{processedContent}</div>
+          <div key={`number-${index}`} className="mb-4">
+            <div className="flex items-start gap-2">
+              <span className="text-emerald-600 font-semibold text-sm mt-0.5 flex-shrink-0">
+                {numberMatch[1]}.
+              </span>
+              <div className="flex-1 text-sm leading-relaxed text-gray-800">
+                {processedContent}
+              </div>
+            </div>
           </div>
         );
         return;
       }
 
-      // Regular paragraph
+      // Regular paragraph (intro text, etc)
       elements.push(
-        <p key={`p-${index}`} className="mb-4 text-sm leading-relaxed">
-          {processInlineFormatting(trimmedLine)}
+        <p
+          key={`p-${index}`}
+          className="mb-3 text-sm leading-relaxed text-gray-800"
+        >
+          {processInlineFormatting(trimmedPart)}
         </p>
       );
     });
@@ -165,9 +178,7 @@ const MarkdownRenderer = ({ text }) => {
     return elements;
   };
 
-  return (
-    <div className="markdown-content text-gray-800">{renderMarkdown(text)}</div>
-  );
+  return <div className="markdown-content">{renderMarkdown(text)}</div>;
 };
 
 export default MarkdownRenderer;
