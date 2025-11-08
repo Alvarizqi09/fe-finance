@@ -17,7 +17,7 @@
   }
 }
 
-/* Background gradient yang fresh untuk light mode */
+/* Background gradient fresh untuk light mode */
 body {
   background: linear-gradient(
     135deg,
@@ -32,47 +32,48 @@ body {
   overflow-x: hidden;
 }
 
+/* Kembalikan dark mode ke warna abu-abu netral */
 @media (prefers-color-scheme: dark) {
   body {
     background: linear-gradient(
       135deg,
-      #0f766e 0%,
-      #115e59 25%,
-      #134e4a 50%,
-      #0d9488 75%,
-      #059669 100%
+      #1f2937 0%,
+      #111827 25%,
+      #0f172a 50%,
+      #1e293b 75%,
+      #334155 100%
     );
   }
 }
 
-/* Glass card dengan transparansi yang pas untuk light mode */
+/* Glass card */
 .glass-card {
   @apply bg-white/40 backdrop-blur-2xl rounded-3xl border border-white/60 shadow-2xl shadow-emerald-100/30;
-  @apply dark:bg-gray-800/70 dark:border-gray-700/50 dark:shadow-black/20;
+  @apply dark:bg-gray-800/80 dark:border-gray-700/60 dark:shadow-black/30;
 }
 
-/* Input box dengan glass effect */
+/* Input box */
 .input-box {
   @apply w-full flex justify-between gap-3 text-sm text-gray-700 bg-white/60 backdrop-blur-xl rounded-2xl px-4 py-3 mb-4 mt-3 border border-white/70 outline-none focus:bg-white/80 focus:border-emerald-300/70 focus:ring-2 focus:ring-emerald-200/50 transition-all duration-300 shadow-lg shadow-emerald-100/40;
-  @apply dark:bg-gray-700/40 dark:border-gray-600/50 dark:text-gray-100 dark:shadow-black/10 dark:focus:bg-gray-600/60 dark:focus:border-emerald-400/50 dark:focus:ring-emerald-300/30;
+  @apply dark:bg-gray-700/60 dark:border-gray-600/60 dark:text-gray-100 dark:shadow-black/20 dark:focus:bg-gray-600/70 dark:focus:border-emerald-400/50 dark:focus:ring-emerald-400/30;
 }
 
-/* Button primary dengan gradient segar */
+/* Button primary */
 .btn-primary {
   @apply w-full bg-gradient-to-r from-emerald-400 to-teal-500 text-white shadow-lg shadow-emerald-200/50 p-[14px] rounded-2xl my-2 hover:from-emerald-500 hover:to-teal-600 hover:shadow-xl hover:shadow-emerald-300/60 backdrop-blur-sm transition-all duration-300 transform hover:scale-[1.02] font-semibold text-base;
-  @apply dark:from-emerald-600 dark:to-teal-600 dark:shadow-emerald-800/30 dark:hover:from-emerald-700 dark:hover:to-teal-700 dark:hover:shadow-emerald-900/40;
+  @apply dark:from-emerald-600 dark:to-teal-600 dark:shadow-emerald-900/40 dark:hover:from-emerald-500 dark:hover:to-teal-500;
 }
 
-/* Add button dengan gradient */
+/* Add button */
 .add-btn {
-  @apply flex items-center gap-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-400 to-teal-500 dark:from-emerald-600 dark:to-teal-600 px-4 py-2 rounded-2xl shadow-lg shadow-emerald-200/50 dark:shadow-emerald-800/40 hover:from-emerald-500 hover:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700 hover:shadow-xl hover:shadow-emerald-300/60 dark:hover:shadow-emerald-700/50 transition-all duration-300;
+  @apply flex items-center gap-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-400 to-teal-500 dark:from-emerald-600 dark:to-teal-600 px-4 py-2 rounded-2xl shadow-lg shadow-emerald-200/50 dark:shadow-emerald-900/40 hover:from-emerald-500 hover:to-teal-600 dark:hover:from-emerald-500 dark:hover:to-teal-500 hover:shadow-xl hover:shadow-emerald-300/60 dark:hover:shadow-emerald-800/50 transition-all duration-300;
 }
 
 .add-btn-fill {
   @apply text-white bg-gradient-to-r from-emerald-400 to-teal-500;
 }
 
-/* Glass background utility */
+/* Glass background */
 .glass-bg {
   background: linear-gradient(
     135deg,
@@ -86,41 +87,12 @@ body {
 /* Card styles */
 .card {
   @apply px-6 py-10 rounded-2xl shadow-lg border border-white/50 bg-white/40 backdrop-blur-xl;
-  @apply dark:bg-gray-800/70 dark:border-gray-700/50;
+  @apply dark:bg-gray-800/80 dark:border-gray-700/60;
 }
 
 .card-btn {
   @apply flex items-center gap-3 text-[12px] font-medium text-gray-700 hover:text-white hover:bg-primary px-4 py-1.5 bg-white/60 border border-white/50 cursor-pointer rounded-2xl shadow-md transition-all duration-300;
-  @apply dark:bg-gray-700/50 dark:border-gray-600/50;
-}
-
-/* Placeholder styling untuk date input */
-.input-box input[type="date"]:invalid {
-  color: transparent;
-}
-
-.input-box input[type="date"]:focus {
-  color: inherit;
-}
-
-/* Style untuk calendar icon di date input */
-.input-box input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.5);
-  cursor: pointer;
-}
-
-.input-box input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  filter: invert(0.3);
-}
-
-@media (prefers-color-scheme: dark) {
-  .input-box input[type="date"]::-webkit-calendar-picker-indicator {
-    filter: invert(0.8);
-  }
-
-  .input-box input[type="date"]::-webkit-calendar-picker-indicator:hover {
-    filter: invert(1);
-  }
+  @apply dark:bg-gray-700/60 dark:border-gray-600/60 dark:text-gray-200;
 }
 
 /* Dark mode untuk select options */
@@ -130,7 +102,7 @@ select option {
 
 /* Alert dialog */
 .delete-alert-container {
-  @apply bg-white/60 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl p-6 border border-white/50 dark:border-gray-700/50;
+  @apply bg-white/60 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl p-6 border border-white/50 dark:border-gray-700/60;
 }
 
 /* Text colors */
@@ -141,6 +113,8 @@ select option {
 .text-secondary-dark {
   @apply text-gray-600 dark:text-gray-300;
 }
+
+/* Sisa CSS tetap sama... */
 
 /* Skeleton Loading Animations */
 @keyframes shimmer {

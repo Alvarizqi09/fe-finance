@@ -12,18 +12,18 @@ const AuthLayout = ({ children }) => {
           Stack It
         </h2>
         <div className="flex-1 flex items-center justify-center">
-          <div className="glass-card p-6 md:p-8 w-full max-w-md mx-auto dark:bg-gray-800/70 dark:border-gray-700/50">
+          <div className="glass-card p-6 md:p-8 w-full max-w-md mx-auto dark:bg-gray-800/80 dark:border-gray-700/60">
             {children}
           </div>
         </div>
       </div>
 
       {/* Right Side - Graphics */}
-      <div className="hidden md:block w-[40vw] h-screen bg-gradient-to-br from-emerald-100/80 to-teal-100/80 dark:from-gray-800 dark:to-gray-900 backdrop-blur-xl overflow-hidden p-8 relative">
+      <div className="hidden md:block w-[40vw] h-screen bg-gradient-to-br from-emerald-100/80 to-teal-100/80 dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 backdrop-blur-xl overflow-hidden p-8 relative">
         {/* Decorative Elements */}
-        <div className="w-48 h-48 rounded-[40px] bg-gradient-to-br from-emerald-200/40 to-teal-200/40 dark:from-emerald-800/30 dark:to-teal-800/30 backdrop-blur-xl absolute -top-7 -left-5 border border-white/60 dark:border-gray-700/60 shadow-xl shadow-emerald-100/30 dark:shadow-black/20"></div>
-        <div className="w-48 h-56 rounded-[40px] border-[20px] border-white/60 dark:border-gray-700/60 absolute top-[30%] -right-10 shadow-xl shadow-teal-100/20 dark:shadow-black/20"></div>
-        <div className="w-48 h-48 rounded-[40px] bg-gradient-to-br from-teal-200/40 to-emerald-200/40 dark:from-teal-800/30 dark:to-emerald-800/30 backdrop-blur-xl absolute -bottom-7 -left-5 border border-white/60 dark:border-gray-700/60 shadow-xl shadow-emerald-100/30 dark:shadow-black/20"></div>
+        <div className="w-48 h-48 rounded-[40px] bg-gradient-to-br from-emerald-200/40 to-teal-200/40 dark:from-gray-700/60 dark:to-gray-600/60 backdrop-blur-xl absolute -top-7 -left-5 border border-white/60 dark:border-gray-600/60 shadow-xl shadow-emerald-100/30 dark:shadow-black/30"></div>
+        <div className="w-48 h-56 rounded-[40px] border-[20px] border-white/60 dark:border-gray-600/60 absolute top-[30%] -right-10 shadow-xl shadow-teal-100/20 dark:shadow-black/30"></div>
+        <div className="w-48 h-48 rounded-[40px] bg-gradient-to-br from-teal-200/40 to-emerald-200/40 dark:from-gray-600/60 dark:to-gray-700/60 backdrop-blur-xl absolute -bottom-7 -left-5 border border-white/60 dark:border-gray-600/60 shadow-xl shadow-emerald-100/30 dark:shadow-black/30"></div>
 
         {/* Stats Card */}
         <div className="grid grid-cols-1 z-20 mt-8">
