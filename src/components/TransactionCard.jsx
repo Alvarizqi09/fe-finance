@@ -12,6 +12,7 @@ const TransactionCard = ({
   date,
   amount,
   type,
+  hideDeleteBtn = false,
   onDelete = () => {},
 }) => {
   const getAmountStyles = (type) => {
@@ -39,12 +40,14 @@ const TransactionCard = ({
         </div>
 
         <div className="mt-1 flex items-center gap-3">
-          <button
-            className="text-gray-500 hover:text-red-500 cursor-pointer"
-            onClick={onDelete}
-          >
-            <LuTrash2 size={18} />
-          </button>
+          {!hideDeleteBtn && (
+            <button
+              className="text-gray-500 hover:text-red-500 opacity-0 group-hover:opacity-100 cursor-pointer"
+              onClick={onDelete}
+            >
+              <LuTrash2 size={18} />
+            </button>
+          )}
 
           <div
             className={`flex items-center gap-2 px-3 py-1.5 rounded-md ${getAmountStyles(

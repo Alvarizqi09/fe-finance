@@ -22,6 +22,7 @@ const RecentTransactions = ({ transactions, onSeeMore }) => {
             date={moment(item.date).format("DD MMM YYYY")}
             amount={item.amount}
             type={item.type}
+            hideDeleteBtn={true}
           />
         ))}
       </div>
