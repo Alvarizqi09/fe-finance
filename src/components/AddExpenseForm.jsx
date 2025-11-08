@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
 import EmojiPickerPopup from "./EmojiPickerPopup";
-import { EXPENSE_SOURCES } from "../utils/data";
+import { INCOME_SOURCES } from "../utils/data";
 
 const AddExpenseForm = ({ onAddExpense }) => {
   const [expense, setExpense] = useState({
@@ -17,7 +17,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 dark:bg-gray-800/50 dark:rounded-xl">
       <EmojiPickerPopup
         icon={expense.icon}
         onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
@@ -26,9 +26,9 @@ const AddExpenseForm = ({ onAddExpense }) => {
         value={expense.source}
         onChange={(e) => handleChange("source", e.target.value)}
         label="Source"
-        placeholder="Pilih kategori expense"
-        options={EXPENSE_SOURCES}
-        optionClassName="bg-gray-700 hover:bg-emerald-600 focus:bg-emerald-700 transition-colors"
+        placeholder="Pilih sumber pengeluaran"
+        options={INCOME_SOURCES}
+        optionClassName="bg-white dark:bg-gray-700 hover:bg-emerald-600 focus:bg-emerald-700 transition-colors"
       />
       <Input
         value={expense.amount}
@@ -36,7 +36,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
         label="Amount"
         placeholder="Enter amount"
         type="number"
-        placeholderColor="placeholder-white"
+        placeholderColor="placeholder-gray-500 dark:placeholder-gray-400"
       />
       <Input
         value={expense.date}
@@ -48,7 +48,7 @@ const AddExpenseForm = ({ onAddExpense }) => {
       <div className="flex justify-end mt-6">
         <button
           type="submit"
-          className="add-btn add-btn-fill"
+          className="add-btn add-btn-fill dark:bg-gradient-to-r dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700"
           onClick={() => onAddExpense(expense)}
         >
           Add Expense

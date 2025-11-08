@@ -17,7 +17,7 @@ const AddIncomeForm = ({ onAddIncome }) => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 dark:bg-gray-800/50 dark:rounded-xl">
       <EmojiPickerPopup
         icon={income.icon}
         onSelect={(selectedIcon) => handleChange("icon", selectedIcon)}
@@ -28,7 +28,7 @@ const AddIncomeForm = ({ onAddIncome }) => {
         label="Source"
         placeholder="Pilih sumber income"
         options={INCOME_SOURCES}
-        optionClassName="bg-gray-700 hover:bg-emerald-600 focus:bg-emerald-700 transition-colors"
+        optionClassName="bg-white dark:bg-gray-700 hover:bg-emerald-600 focus:bg-emerald-700 transition-colors"
       />
       <Input
         value={income.amount}
@@ -36,7 +36,7 @@ const AddIncomeForm = ({ onAddIncome }) => {
         label="Amount"
         placeholder="Enter amount"
         type="number"
-        placeholderColor="placeholder-white"
+        placeholderColor="placeholder-gray-500 dark:placeholder-gray-400"
       />
       <Input
         value={income.date}
@@ -48,7 +48,7 @@ const AddIncomeForm = ({ onAddIncome }) => {
       <div className="flex justify-end mt-6">
         <button
           type="submit"
-          className="add-btn add-btn-fill"
+          className="add-btn add-btn-fill dark:bg-gradient-to-r dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700"
           onClick={() => onAddIncome(income)}
         >
           Add Income
