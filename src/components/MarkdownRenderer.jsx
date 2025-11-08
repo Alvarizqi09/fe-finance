@@ -11,53 +11,102 @@ const MarkdownRenderer = ({ text }) => {
     let cleaned = content;
 
     // Multiple cleaning passes
-    for (let i = 0; i < 2; i++) {
-      // Fix all the specific duplication patterns we've seen
-      cleaned = cleaned.replace(/([A-Za-z\s]+):\s*\1:/g, "$1:");
-      cleaned = cleaned.replace(/(Rp\s*[\d.,]+)\s*\1/gi, "$1");
-      cleaned = cleaned.replace(/(\b[\w]+\b)\s+\1/gi, "$1");
+    for (let i = 0; i < 3; i++) {
+      // Fix duplicate phrases with colon
+      cleaned = cleaned.replace(/([A-Za-z\u00C0-\u024F\s]+):\s*\1:/g, "$1:");
 
-      // Specific known issues
-      cleaned = cleaned.replace(
-        /Evaluasi Pengeluaran:\s*Evaluasi Pengeluaran:/g,
-        "**Evaluasi Pengeluaran:**"
-      );
-      cleaned = cleaned.replace(
-        /Tingkatkan Pendapatan:\s*Tingkatkan Pendapatan:/g,
-        "**Tingkatkan Pendapatan:**"
-      );
-      cleaned = cleaned.replace(
-        /Prioritaskan Pembayaran:\s*Prioritaskan Pembayaran:/g,
-        "**Prioritaskan Pembayaran:**"
-      );
-      cleaned = cleaned.replace(
-        /Buat Anggaran:\s*Buat Anggaran:/g,
-        "**Buat Anggaran:**"
-      );
-      cleaned = cleaned.replace(
-        /Lacak Pengeluaran:\s*Lacak Pengeluaran:/g,
-        "**Lacak Pengeluaran:**"
-      );
-      cleaned = cleaned.replace(
-        /Dana Darurat:\s*Dana Darurat:/g,
-        "**Dana Darurat:**"
-      );
-      cleaned = cleaned.replace(/Investasi:\s*Investasi:/g, "**Investasi:**");
+      // Fix duplicate Rupiah amounts
+      cleaned = cleaned.replace(/(Rp\s*[\d.,]+)\s*Rp\s*[\d.,]+/gi, "$1");
 
-      // Fix amount duplications
-      cleaned = cleaned.replace(/Rp\s*89\s*Rp\s*89/g, "**Rp 89**");
-      cleaned = cleaned.replace(/Rp\s*233\s*Rp\s*233/g, "**Rp 233**");
-      cleaned = cleaned.replace(/Rp\s*144\s*Rp\s*144/g, "**Rp 144**");
+      // Fix duplicate words
+      cleaned = cleaned.replace(/(\b[\w\u00C0-\u024F]+\b)\s+\1\b/gi, "$1");
+
+      // Fix duplicate numbers
+      cleaned = cleaned.replace(/(\d+)\s*\1\b/g, "$1");
     }
 
     return cleaned.replace(/\s+/g, " ").trim();
+  };
+
+  // Process inline formatting WITHOUT duplication
+  const processInlineFormatting = (text) => {
+    const cleanedText = cleanText(text);
+    const parts = [];
+    let currentIndex = 0;
+
+    // Parse bold (**text**) and italic (*text*) in one pass
+    const pattern = /(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
+    let match;
+
+    while ((match = pattern.exec(cleanedText)) !== null) {
+      // Add text before the match
+      if (match.index > currentIndex) {
+        parts.push({
+          type: "text",
+          content: cleanedText.slice(currentIndex, match.index),
+        });
+      }
+
+      // Add the formatted text
+      if (match[1]) {
+        // Bold match
+        parts.push({
+          type: "bold",
+          content: match[2],
+        });
+      } else if (match[3]) {
+        // Italic match
+        parts.push({
+          type: "italic",
+          content: match[4],
+        });
+      }
+
+      currentIndex = match.index + match[0].length;
+    }
+
+    // Add remaining text
+    if (currentIndex < cleanedText.length) {
+      parts.push({
+        type: "text",
+        content: cleanedText.slice(currentIndex),
+      });
+    }
+
+    // If no formatting found, return plain text
+    if (parts.length === 0) {
+      return cleanedText;
+    }
+
+    // Render the parts
+    return parts.map((part, index) => {
+      switch (part.type) {
+        case "bold":
+          return (
+            <strong
+              key={`bold-${index}`}
+              className="font-semibold text-emerald-700"
+            >
+              {part.content}
+            </strong>
+          );
+        case "italic":
+          return (
+            <em key={`italic-${index}`} className="italic text-gray-600">
+              {part.content}
+            </em>
+          );
+        case "text":
+        default:
+          return part.content;
+      }
+    });
   };
 
   // Function to safely render markdown
   const renderMarkdown = (content) => {
     const cleanedContent = cleanText(content);
 
-    // If content is empty after cleaning, show fallback
     if (!cleanedContent.trim()) {
       return (
         <p className="text-gray-600">
@@ -101,7 +150,6 @@ const MarkdownRenderer = ({ text }) => {
     };
 
     lines.forEach((line, index) => {
-      // Skip empty lines
       const trimmedLine = line.trim();
       if (trimmedLine === "") {
         closeList();
@@ -144,10 +192,9 @@ const MarkdownRenderer = ({ text }) => {
         return;
       }
 
-      // Close list if active and new non-list line
       closeList();
 
-      // Regular paragraph with formatting
+      // Regular paragraph
       elements.push(
         <p key={`p-${index}`} className="mb-3 leading-relaxed">
           {processInlineFormatting(trimmedLine)}
@@ -155,89 +202,7 @@ const MarkdownRenderer = ({ text }) => {
       );
     });
 
-    // Close any open list at the end
     closeList();
-
-    return elements;
-  };
-
-  // Process inline formatting (bold, italic)
-  const processInlineFormatting = (text) => {
-    const elements = [];
-    const boldRegex = /\*\*(.*?)\*\*/g;
-    const italicRegex = /\*(.*?)\*/g;
-
-    let match;
-    const boldMatches = [];
-    const italicMatches = [];
-
-    // Clean the text first
-    const cleanedText = cleanText(text);
-
-    // Collect all bold matches
-    while ((match = boldRegex.exec(cleanedText)) !== null) {
-      boldMatches.push({
-        type: "bold",
-        start: match.index,
-        end: match.index + match[0].length,
-        content: match[1],
-      });
-    }
-
-    // Collect all italic matches
-    while ((match = italicRegex.exec(cleanedText)) !== null) {
-      italicMatches.push({
-        type: "italic",
-        start: match.index,
-        end: match.index + match[0].length,
-        content: match[1],
-      });
-    }
-
-    // Combine and sort all matches
-    const allMatches = [...boldMatches, ...italicMatches].sort(
-      (a, b) => a.start - b.start
-    );
-
-    // Build elements array
-    let lastIndex = 0;
-
-    allMatches.forEach((match, index) => {
-      // Add text before match
-      if (match.start > lastIndex) {
-        elements.push(cleanedText.slice(lastIndex, match.start));
-      }
-
-      // Add formatted element
-      if (match.type === "bold") {
-        elements.push(
-          <strong
-            key={`bold-${index}`}
-            className="font-semibold text-emerald-700"
-          >
-            {match.content}
-          </strong>
-        );
-      } else {
-        elements.push(
-          <em key={`italic-${index}`} className="italic text-gray-600">
-            {match.content}
-          </em>
-        );
-      }
-
-      lastIndex = match.end;
-    });
-
-    // Add remaining text
-    if (lastIndex < cleanedText.length) {
-      elements.push(cleanedText.slice(lastIndex));
-    }
-
-    // If no matches, return original cleaned text
-    if (elements.length === 0) {
-      return cleanedText;
-    }
 
     return elements;
   };
