@@ -4,9 +4,18 @@ import React from "react";
 const MarkdownRenderer = ({ text }) => {
   if (!text) return null;
 
+  // Additional client-side cleaning as fallback
+  const cleanText = (content) => {
+    return content
+      .replace(/([A-Za-z\s]+):\1:/g, "$1:")
+      .replace(/(Rp\s*\d+)\s*\1/gi, "$1")
+      .replace(/\b(\w+)\s+\1\b/gi, "$1");
+  };
+
   // Function to safely render markdown
   const renderMarkdown = (content) => {
-    const lines = content.split("\n");
+    const cleanedContent = cleanText(content);
+    const lines = cleanedContent.split("\n");
     const elements = [];
 
     let currentList = null;
@@ -99,8 +108,11 @@ const MarkdownRenderer = ({ text }) => {
     const boldMatches = [];
     const italicMatches = [];
 
+    // Clean the text first
+    const cleanedText = cleanText(text);
+
     // Collect all bold matches
-    while ((match = boldRegex.exec(text)) !== null) {
+    while ((match = boldRegex.exec(cleanedText)) !== null) {
       boldMatches.push({
         type: "bold",
         start: match.index,
@@ -110,7 +122,7 @@ const MarkdownRenderer = ({ text }) => {
     }
 
     // Collect all italic matches
-    while ((match = italicRegex.exec(text)) !== null) {
+    while ((match = italicRegex.exec(cleanedText)) !== null) {
       italicMatches.push({
         type: "italic",
         start: match.index,
@@ -130,7 +142,7 @@ const MarkdownRenderer = ({ text }) => {
     allMatches.forEach((match, index) => {
       // Add text before match
       if (match.start > lastIndex) {
-        elements.push(text.slice(lastIndex, match.start));
+        elements.push(cleanedText.slice(lastIndex, match.start));
       }
 
       // Add formatted element
@@ -155,13 +167,13 @@ const MarkdownRenderer = ({ text }) => {
     });
 
     // Add remaining text
-    if (lastIndex < text.length) {
-      elements.push(text.slice(lastIndex));
+    if (lastIndex < cleanedText.length) {
+      elements.push(cleanedText.slice(lastIndex));
     }
 
-    // If no matches, return original text
+    // If no matches, return original cleaned text
     if (elements.length === 0) {
-      return text;
+      return cleanedText;
     }
 
     return elements;
