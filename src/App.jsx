@@ -5,6 +5,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
@@ -16,22 +17,30 @@ import { Toaster } from "react-hot-toast";
 import AIChatbot from "./components/AIChatbot";
 
 function App() {
-  // Only show AIChatbot if not on /login or /signup
-  const currentPath = window.location.pathname;
-  const showChatbot = currentPath !== "/login" && currentPath !== "/signup";
   return (
     <UserProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </UserProvider>
+  );
+}
+
+function AppRoutes() {
+  const location = useLocation();
+  const showChatbot =
+    location.pathname !== "/login" && location.pathname !== "/signup";
+  return (
+    <>
       <div>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Root />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={<Home />} />
-            <Route path="/income" element={<Income />} />
-            <Route path="/expense" element={<Expense />} />
-          </Routes>
-        </Router>
+        <Routes>
+          <Route path="/" element={<Root />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/dashboard" element={<Home />} />
+          <Route path="/income" element={<Income />} />
+          <Route path="/expense" element={<Expense />} />
+        </Routes>
       </div>
 
       <Toaster
@@ -42,10 +51,8 @@ function App() {
           },
         }}
       />
-
-      {/* AI Chatbot - Only visible if not on login/signup */}
       {showChatbot && <AIChatbot />}
-    </UserProvider>
+    </>
   );
 }
 
