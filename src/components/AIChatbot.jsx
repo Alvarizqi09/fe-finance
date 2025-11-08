@@ -60,7 +60,7 @@ const AIChatbot = () => {
 
     // Call AI API through backend
     const botResponseText = await callAIAPI(inputMessage);
-
+    <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 scrollbar-hide"></div>;
     // Add bot response
     const botMessage = {
       id: Date.now() + 1,
@@ -120,7 +120,7 @@ const AIChatbot = () => {
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 scrollbar-hide">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -184,11 +184,14 @@ const AIChatbot = () => {
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyDown={handleKeyPress}
                 placeholder="Ask me anything about your finances"
-                className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 resize-none transition-all"
+                className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 resize-none transition-all scrollbar-hide"
                 rows="1"
                 style={{
                   minHeight: "44px",
                   maxHeight: "120px",
+                  scrollbarWidth: "none", // Firefox
+                  msOverflowStyle: "none", // IE 10+
+                  overflow: "auto",
                 }}
               />
               <button
