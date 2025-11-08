@@ -1,3 +1,5 @@
+// Alternatif SVG dengan layout yang lebih seimbang
+// SVG Illustration dengan posisi indicators yang lebih baik
 const BoxFinanceIllustration = () => {
   return (
     <svg
@@ -30,8 +32,9 @@ const BoxFinanceIllustration = () => {
 
       {/* Header Text */}
       <text
-        x="40"
+        x="200"
         y="45"
+        textAnchor="middle"
         className="text-sm font-semibold fill-white transition-colors duration-300"
         style={{
           fontFamily: "system-ui, sans-serif",
@@ -130,55 +133,90 @@ const BoxFinanceIllustration = () => {
         className="fill-emerald-500 dark:fill-emerald-600 transition-colors duration-300"
       />
 
-      {/* Financial Indicators */}
-      {/* Income Indicator */}
-      <circle
-        cx="120"
-        cy="220"
-        r="8"
-        className="fill-emerald-400 dark:fill-emerald-500 transition-colors duration-300"
-      />
-      <text
-        x="135"
-        y="225"
-        className="text-xs fill-gray-700 dark:fill-gray-300 transition-colors duration-300"
-        style={{ fontFamily: "system-ui, sans-serif", fontSize: "12px" }}
-      >
-        Income
-      </text>
+      {/* Financial Indicators - Dipusatkan dan diatur ulang */}
+      <g className="transition-colors duration-300">
+        {/* Income Indicator */}
+        <circle
+          cx="80"
+          cy="230"
+          r="6"
+          className="fill-emerald-400 dark:fill-emerald-500"
+        />
+        <text
+          x="95"
+          y="233"
+          className="text-xs fill-gray-700 dark:fill-gray-300"
+          style={{ fontFamily: "system-ui, sans-serif", fontSize: "11px" }}
+        >
+          Income
+        </text>
 
-      {/* Expense Indicator */}
-      <circle
-        cx="200"
-        cy="220"
-        r="8"
-        className="fill-teal-400 dark:fill-teal-500 transition-colors duration-300"
-      />
-      <text
-        x="215"
-        y="225"
-        className="text-xs fill-gray-700 dark:fill-gray-300 transition-colors duration-300"
-        style={{ fontFamily: "system-ui, sans-serif", fontSize: "12px" }}
-      >
-        Expense
-      </text>
+        {/* Expense Indicator */}
+        <circle
+          cx="170"
+          cy="230"
+          r="6"
+          className="fill-teal-400 dark:fill-teal-500"
+        />
+        <text
+          x="185"
+          y="233"
+          className="text-xs fill-gray-700 dark:fill-gray-300"
+          style={{ fontFamily: "system-ui, sans-serif", fontSize: "11px" }}
+        >
+          Expense
+        </text>
 
-      {/* Savings Indicator */}
-      <circle
-        cx="280"
-        cy="220"
-        r="8"
-        className="fill-amber-400 dark:fill-amber-500 transition-colors duration-300"
+        {/* Savings Indicator */}
+        <circle
+          cx="260"
+          cy="230"
+          r="6"
+          className="fill-amber-400 dark:fill-amber-500"
+        />
+        <text
+          x="275"
+          y="233"
+          className="text-xs fill-gray-700 dark:fill-gray-300"
+          style={{ fontFamily: "system-ui, sans-serif", fontSize: "11px" }}
+        >
+          Savings
+        </text>
+      </g>
+
+      {/* Stats Badge - Dipindah ke kanan atas chart */}
+      <rect
+        x="300"
+        y="60"
+        width="70"
+        height="32"
+        rx="6"
+        className="fill-emerald-500/20 dark:fill-emerald-600/20 transition-colors duration-300"
       />
       <text
-        x="295"
-        y="225"
-        className="text-xs fill-gray-700 dark:fill-gray-300 transition-colors duration-300"
-        style={{ fontFamily: "system-ui, sans-serif", fontSize: "12px" }}
+        x="335"
+        y="75"
+        textAnchor="middle"
+        className="text-xs font-bold fill-emerald-700 dark:fill-emerald-400 transition-colors duration-300"
+        style={{
+          fontFamily: "system-ui, sans-serif",
+          fontSize: "10px",
+          fontWeight: "bold",
+        }}
       >
-        Savings
+        +12.5%
+      </text>
+      <text
+        x="335"
+        y="88"
+        textAnchor="middle"
+        className="text-xs fill-emerald-600 dark:fill-emerald-300 transition-colors duration-300"
+        style={{ fontFamily: "system-ui, sans-serif", fontSize: "9px" }}
+      >
+        This Month
       </text>
     </svg>
   );
 };
+
 export default BoxFinanceIllustration;
