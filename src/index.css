@@ -48,10 +48,6 @@ body {
   @apply dark:bg-gray-700/40 dark:border-gray-600/50 dark:text-gray-100 dark:shadow-black/10 dark:focus:bg-gray-600/60 dark:focus:border-emerald-400/50 dark:focus:ring-emerald-300/30;
 }
 
-.btn-primary {
-  @apply w-full bg-gradient-to-r from-emerald-400 to-teal-500 text-white shadow-lg shadow-emerald-200/40 p-[14px] rounded-2xl my-2 hover:from-emerald-500 hover:to-teal-600 hover:shadow-xl hover:shadow-emerald-300/50 backdrop-blur-sm transition-all duration-300 transform hover:scale-[1.02] font-semibold text-base;
-}
-
 /* Placeholder styling untuk date input */
 .input-box input[type="date"]:invalid {
   color: transparent;
@@ -90,8 +86,16 @@ select option {
   @apply dark:bg-gray-700 dark:text-white;
 }
 
+/* Dark mode untuk auth pages */
+.btn-primary {
+  @apply w-full bg-gradient-to-r from-emerald-400 to-teal-500 text-white shadow-lg shadow-emerald-200/40 p-[14px] rounded-2xl my-2 hover:from-emerald-500 hover:to-teal-600 hover:shadow-xl hover:shadow-emerald-300/50 backdrop-blur-sm transition-all duration-300 transform hover:scale-[1.02] font-semibold text-base;
+  @apply dark:from-emerald-600 dark:to-teal-600 dark:shadow-emerald-800/30 dark:hover:from-emerald-700 dark:hover:to-teal-700 dark:hover:shadow-emerald-900/40;
+}
+
+/* Glass card dengan dark mode */
 .glass-card {
-  @apply bg-white/30 dark:bg-gray-800/70 backdrop-blur-2xl rounded-3xl border border-white/50 dark:border-gray-700/50 shadow-2xl shadow-black/10;
+  @apply bg-white/30 backdrop-blur-2xl rounded-3xl border border-white/50 shadow-2xl shadow-black/10;
+  @apply dark:bg-gray-800/70 dark:border-gray-700/50 dark:shadow-black/20;
 }
 
 .glass-bg {

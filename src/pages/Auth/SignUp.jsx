@@ -10,6 +10,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { UserContext } from "../../context/UserContextObject";
 import uploadImage from "../../utils/uploadImage";
+
 const SignUp = () => {
   const [profile, setProfile] = useState(null);
   const [fullName, setFullName] = useState("");
@@ -97,10 +98,10 @@ const SignUp = () => {
       />
       <div className="w-full">
         <div className="text-center mb-6">
-          <h3 className="text-2xl md:text-3xl font-bold text-emerald-700 mb-2 tracking-tight">
+          <h3 className="text-2xl md:text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 tracking-tight">
             Create Account
           </h3>
-          <p className="text-emerald-600/80 text-sm font-medium leading-relaxed">
+          <p className="text-emerald-600/80 dark:text-gray-300 text-sm font-medium leading-relaxed">
             Join us and start managing your finances
           </p>
         </div>
@@ -138,7 +139,7 @@ const SignUp = () => {
             </div>
             <button
               type="submit"
-              className="btn-primary relative overflow-hidden group"
+              className="btn-primary relative overflow-hidden group dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700"
             >
               <span className="relative z-10 flex items-center justify-center">
                 <svg
@@ -158,13 +159,13 @@ const SignUp = () => {
               </span>
             </button>
           </form>
-          <div className="text-center pt-4 border-t border-white/20">
-            <p className="text-emerald-600/80 text-sm">
-              Already have an account?
+          <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-emerald-600/80 dark:text-gray-400 text-sm">
+              Already have an account?{" "}
               <button
                 type="button"
                 onClick={handleNavigateLogin}
-                className="text-teal-600 hover:text-teal-700 font-semibold transition-colors hover:underline"
+                className="text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-semibold transition-colors hover:underline"
               >
                 Sign In
               </button>

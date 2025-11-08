@@ -78,13 +78,13 @@ const Login = () => {
       />
       <div className="w-full">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl shadow-xl shadow-emerald-200/50 mb-4 backdrop-blur-xl">
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl shadow-xl shadow-emerald-200/50 dark:shadow-emerald-800/30 mb-4 backdrop-blur-xl">
             <LuLockKeyhole className="w-8 h-8 text-white" />
           </div>
-          <h3 className="text-2xl md:text-3xl font-bold text-emerald-700 mb-2 tracking-tight">
+          <h3 className="text-2xl md:text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 tracking-tight">
             Welcome Back
           </h3>
-          <p className="text-emerald-600/80 text-sm font-medium leading-relaxed">
+          <p className="text-emerald-600/80 dark:text-gray-300 text-sm font-medium leading-relaxed">
             Sign in to continue managing your finances
           </p>
         </div>
@@ -110,14 +110,14 @@ const Login = () => {
             <div className="flex justify-end">
               <button
                 type="button"
-                className="text-xs text-teal-600 hover:text-teal-700 font-medium transition-colors hover:underline"
+                className="text-xs text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium transition-colors hover:underline"
               >
                 Forgot Password?
               </button>
             </div>
             <button
               type="submit"
-              className="btn-primary relative overflow-hidden group"
+              className="btn-primary relative overflow-hidden group dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700"
             >
               <span className="relative z-10 flex items-center justify-center">
                 <IoLogInOutline className="mr-2 w-5 h-5" />
@@ -125,13 +125,13 @@ const Login = () => {
               </span>
             </button>
           </form>
-          <div className="text-center border-t border-white/20">
-            <p className="text-emerald-600/80 text-sm">
-              Don't have an account?
+          <div className="text-center border-t border-gray-200 dark:border-gray-700 pt-4">
+            <p className="text-emerald-600/80 dark:text-gray-400 text-sm">
+              Don't have an account?{" "}
               <button
                 type="button"
                 onClick={handleNavigateSignUp}
-                className="text-teal-600 hover:text-teal-700 font-semibold transition-colors hover:underline"
+                className="text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-semibold transition-colors hover:underline ml-1"
               >
                 Create Account
               </button>
