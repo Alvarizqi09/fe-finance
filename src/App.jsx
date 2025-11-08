@@ -16,6 +16,7 @@ import { Toaster } from "react-hot-toast";
 import AIChatbot from "./components/AIChatbot";
 
 function App() {
+  const isAuthenticated = !!localStorage.getItem("token");
   return (
     <UserProvider>
       <div>
@@ -40,8 +41,8 @@ function App() {
         }}
       />
 
-      {/* AI Chatbot - Always visible */}
-      <AIChatbot />
+      {/* AI Chatbot - Only visible if authenticated */}
+      {isAuthenticated && <AIChatbot />}
     </UserProvider>
   );
 }
