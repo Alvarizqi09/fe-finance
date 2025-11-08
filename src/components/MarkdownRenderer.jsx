@@ -4,17 +4,68 @@ import React from "react";
 const MarkdownRenderer = ({ text }) => {
   if (!text) return null;
 
-  // Additional client-side cleaning as fallback
+  // Ultra-aggressive client-side cleaning
   const cleanText = (content) => {
-    return content
-      .replace(/([A-Za-z\s]+):\1:/g, "$1:")
-      .replace(/(Rp\s*\d+)\s*\1/gi, "$1")
-      .replace(/\b(\w+)\s+\1\b/gi, "$1");
+    if (!content) return "";
+
+    let cleaned = content;
+
+    // Multiple cleaning passes
+    for (let i = 0; i < 2; i++) {
+      // Fix all the specific duplication patterns we've seen
+      cleaned = cleaned.replace(/([A-Za-z\s]+):\s*\1:/g, "$1:");
+      cleaned = cleaned.replace(/(Rp\s*[\d.,]+)\s*\1/gi, "$1");
+      cleaned = cleaned.replace(/(\b[\w]+\b)\s+\1/gi, "$1");
+
+      // Specific known issues
+      cleaned = cleaned.replace(
+        /Evaluasi Pengeluaran:\s*Evaluasi Pengeluaran:/g,
+        "**Evaluasi Pengeluaran:**"
+      );
+      cleaned = cleaned.replace(
+        /Tingkatkan Pendapatan:\s*Tingkatkan Pendapatan:/g,
+        "**Tingkatkan Pendapatan:**"
+      );
+      cleaned = cleaned.replace(
+        /Prioritaskan Pembayaran:\s*Prioritaskan Pembayaran:/g,
+        "**Prioritaskan Pembayaran:**"
+      );
+      cleaned = cleaned.replace(
+        /Buat Anggaran:\s*Buat Anggaran:/g,
+        "**Buat Anggaran:**"
+      );
+      cleaned = cleaned.replace(
+        /Lacak Pengeluaran:\s*Lacak Pengeluaran:/g,
+        "**Lacak Pengeluaran:**"
+      );
+      cleaned = cleaned.replace(
+        /Dana Darurat:\s*Dana Darurat:/g,
+        "**Dana Darurat:**"
+      );
+      cleaned = cleaned.replace(/Investasi:\s*Investasi:/g, "**Investasi:**");
+
+      // Fix amount duplications
+      cleaned = cleaned.replace(/Rp\s*89\s*Rp\s*89/g, "**Rp 89**");
+      cleaned = cleaned.replace(/Rp\s*233\s*Rp\s*233/g, "**Rp 233**");
+      cleaned = cleaned.replace(/Rp\s*144\s*Rp\s*144/g, "**Rp 144**");
+    }
+
+    return cleaned.replace(/\s+/g, " ").trim();
   };
 
   // Function to safely render markdown
   const renderMarkdown = (content) => {
     const cleanedContent = cleanText(content);
+
+    // If content is empty after cleaning, show fallback
+    if (!cleanedContent.trim()) {
+      return (
+        <p className="text-gray-600">
+          Maaf, terjadi kesalahan dalam menampilkan respons.
+        </p>
+      );
+    }
+
     const lines = cleanedContent.split("\n");
     const elements = [];
 
@@ -28,7 +79,7 @@ const MarkdownRenderer = ({ text }) => {
           elements.push(
             <ul
               key={`ul-${currentList}`}
-              className="list-disc list-inside space-y-1 ml-4"
+              className="list-disc list-inside space-y-2 ml-4 mb-2"
             >
               {listItems}
             </ul>
@@ -37,7 +88,7 @@ const MarkdownRenderer = ({ text }) => {
           elements.push(
             <ol
               key={`ol-${currentList}`}
-              className="list-decimal list-inside space-y-1 ml-4"
+              className="list-decimal list-inside space-y-2 ml-4 mb-2"
             >
               {listItems}
             </ol>
@@ -51,33 +102,45 @@ const MarkdownRenderer = ({ text }) => {
 
     lines.forEach((line, index) => {
       // Skip empty lines
-      if (line.trim() === "") {
+      const trimmedLine = line.trim();
+      if (trimmedLine === "") {
         closeList();
-        elements.push(<br key={`br-${index}`} />);
         return;
       }
 
       // Handle bullet points
-      if (line.trim().startsWith("•") || line.trim().startsWith("-")) {
+      if (trimmedLine.startsWith("•") || trimmedLine.startsWith("-")) {
         if (currentList === null || listType !== "ul") {
           closeList();
           currentList = index;
           listType = "ul";
         }
-        const listItem = processInlineFormatting(line.replace(/^[•-]\s*/, ""));
-        listItems.push(<li key={`li-${index}`}>{listItem}</li>);
+        const listItem = processInlineFormatting(
+          trimmedLine.replace(/^[•-]\s*/, "")
+        );
+        listItems.push(
+          <li key={`li-${index}`} className="mb-1">
+            {listItem}
+          </li>
+        );
         return;
       }
 
       // Handle numbered lists
-      if (/^\d+\.\s/.test(line.trim())) {
+      if (/^\d+\.\s/.test(trimmedLine)) {
         if (currentList === null || listType !== "ol") {
           closeList();
           currentList = index;
           listType = "ol";
         }
-        const listItem = processInlineFormatting(line.replace(/^\d+\.\s*/, ""));
-        listItems.push(<li key={`li-${index}`}>{listItem}</li>);
+        const listItem = processInlineFormatting(
+          trimmedLine.replace(/^\d+\.\s*/, "")
+        );
+        listItems.push(
+          <li key={`li-${index}`} className="mb-1">
+            {listItem}
+          </li>
+        );
         return;
       }
 
@@ -86,8 +149,8 @@ const MarkdownRenderer = ({ text }) => {
 
       // Regular paragraph with formatting
       elements.push(
-        <p key={`p-${index}`} className="mb-2">
-          {processInlineFormatting(line)}
+        <p key={`p-${index}`} className="mb-3 leading-relaxed">
+          {processInlineFormatting(trimmedLine)}
         </p>
       );
     });
@@ -179,7 +242,11 @@ const MarkdownRenderer = ({ text }) => {
     return elements;
   };
 
-  return <div className="markdown-content">{renderMarkdown(text)}</div>;
+  return (
+    <div className="markdown-content text-sm leading-relaxed">
+      {renderMarkdown(text)}
+    </div>
+  );
 };
 
 export default MarkdownRenderer;
