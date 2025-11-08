@@ -28,14 +28,14 @@ const MarkdownRenderer = ({ text }) => {
     return cleaned.replace(/\s+/g, " ").trim();
   };
 
-  // Process inline formatting WITHOUT duplication
+  // Process inline formatting - ONLY BOLD (no italic)
   const processInlineFormatting = (text) => {
     const cleanedText = cleanText(text);
     const parts = [];
     let currentIndex = 0;
 
-    // Parse bold (**text**) and italic (*text*) in one pass
-    const pattern = /(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
+    // Parse ONLY bold (**text**)
+    const pattern = /\*\*([^*]+)\*\*/g;
     let match;
 
     while ((match = pattern.exec(cleanedText)) !== null) {
@@ -47,20 +47,11 @@ const MarkdownRenderer = ({ text }) => {
         });
       }
 
-      // Add the formatted text
-      if (match[1]) {
-        // Bold match
-        parts.push({
-          type: "bold",
-          content: match[2],
-        });
-      } else if (match[3]) {
-        // Italic match
-        parts.push({
-          type: "italic",
-          content: match[4],
-        });
-      }
+      // Add bold text
+      parts.push({
+        type: "bold",
+        content: match[1],
+      });
 
       currentIndex = match.index + match[0].length;
     }
@@ -80,26 +71,17 @@ const MarkdownRenderer = ({ text }) => {
 
     // Render the parts
     return parts.map((part, index) => {
-      switch (part.type) {
-        case "bold":
-          return (
-            <strong
-              key={`bold-${index}`}
-              className="font-semibold text-emerald-700"
-            >
-              {part.content}
-            </strong>
-          );
-        case "italic":
-          return (
-            <em key={`italic-${index}`} className="italic text-gray-600">
-              {part.content}
-            </em>
-          );
-        case "text":
-        default:
-          return part.content;
+      if (part.type === "bold") {
+        return (
+          <strong
+            key={`bold-${index}`}
+            className="font-semibold text-emerald-700"
+          >
+            {part.content}
+          </strong>
+        );
       }
+      return part.content;
     });
   };
 
@@ -126,19 +108,13 @@ const MarkdownRenderer = ({ text }) => {
       if (currentList !== null && listItems.length > 0) {
         if (listType === "ul") {
           elements.push(
-            <ul
-              key={`ul-${currentList}`}
-              className="list-disc list-inside space-y-2 ml-4 mb-2"
-            >
+            <ul key={`ul-${currentList}`} className="space-y-3 mb-4">
               {listItems}
             </ul>
           );
         } else if (listType === "ol") {
           elements.push(
-            <ol
-              key={`ol-${currentList}`}
-              className="list-decimal list-inside space-y-2 ml-4 mb-2"
-            >
+            <ol key={`ol-${currentList}`} className="space-y-3 mb-4">
               {listItems}
             </ol>
           );
@@ -167,8 +143,11 @@ const MarkdownRenderer = ({ text }) => {
           trimmedLine.replace(/^[•-]\s*/, "")
         );
         listItems.push(
-          <li key={`li-${index}`} className="mb-1">
-            {listItem}
+          <li key={`li-${index}`} className="mb-3 leading-relaxed">
+            <span className="inline-block">
+              <span className="text-emerald-600 font-bold mr-2">•</span>
+              {listItem}
+            </span>
           </li>
         );
         return;
@@ -185,7 +164,7 @@ const MarkdownRenderer = ({ text }) => {
           trimmedLine.replace(/^\d+\.\s*/, "")
         );
         listItems.push(
-          <li key={`li-${index}`} className="mb-1">
+          <li key={`li-${index}`} className="mb-3 leading-relaxed ml-5">
             {listItem}
           </li>
         );
@@ -208,7 +187,7 @@ const MarkdownRenderer = ({ text }) => {
   };
 
   return (
-    <div className="markdown-content text-sm leading-relaxed">
+    <div className="markdown-content text-sm leading-relaxed text-gray-800">
       {renderMarkdown(text)}
     </div>
   );
