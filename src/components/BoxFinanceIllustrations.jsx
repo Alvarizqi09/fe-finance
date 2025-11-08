@@ -1,5 +1,4 @@
-// Alternatif SVG dengan layout yang lebih seimbang
-// SVG Illustration dengan posisi indicators yang lebih baik
+// SVG Illustration dengan indicators di tengah
 const BoxFinanceIllustration = () => {
   return (
     <svg
@@ -43,6 +42,29 @@ const BoxFinanceIllustration = () => {
         }}
       >
         Financial Overview
+      </text>
+
+      {/* Stats Badge - di header kanan */}
+      <rect
+        x="320"
+        y="25"
+        width="50"
+        height="25"
+        rx="5"
+        className="fill-white/30 dark:fill-gray-900/30 transition-colors duration-300"
+      />
+      <text
+        x="345"
+        y="42"
+        textAnchor="middle"
+        className="text-xs font-bold fill-emerald-700 dark:fill-emerald-300 transition-colors duration-300"
+        style={{
+          fontFamily: "system-ui, sans-serif",
+          fontSize: "10px",
+          fontWeight: "bold",
+        }}
+      >
+        +12.5%
       </text>
 
       {/* Chart Container */}
@@ -133,90 +155,60 @@ const BoxFinanceIllustration = () => {
         className="fill-emerald-500 dark:fill-emerald-600 transition-colors duration-300"
       />
 
-      {/* Financial Indicators - Dipusatkan dan diatur ulang */}
+      {/* Financial Indicators - Dipusatkan dengan baik */}
       <g className="transition-colors duration-300">
-        {/* Income Indicator */}
+        {/* Income Indicator - Posisi lebih ke tengah */}
         <circle
-          cx="80"
+          cx="120"
           cy="230"
           r="6"
           className="fill-emerald-400 dark:fill-emerald-500"
         />
         <text
-          x="95"
-          y="233"
+          x="120"
+          y="245"
+          textAnchor="middle"
           className="text-xs fill-gray-700 dark:fill-gray-300"
           style={{ fontFamily: "system-ui, sans-serif", fontSize: "11px" }}
         >
           Income
         </text>
 
-        {/* Expense Indicator */}
+        {/* Expense Indicator - Tepat di tengah */}
         <circle
-          cx="170"
+          cx="200"
           cy="230"
           r="6"
           className="fill-teal-400 dark:fill-teal-500"
         />
         <text
-          x="185"
-          y="233"
+          x="200"
+          y="245"
+          textAnchor="middle"
           className="text-xs fill-gray-700 dark:fill-gray-300"
           style={{ fontFamily: "system-ui, sans-serif", fontSize: "11px" }}
         >
           Expense
         </text>
 
-        {/* Savings Indicator */}
+        {/* Savings Indicator - Posisi lebih ke tengah */}
         <circle
-          cx="260"
+          cx="280"
           cy="230"
           r="6"
           className="fill-amber-400 dark:fill-amber-500"
         />
         <text
-          x="275"
-          y="233"
+          x="280"
+          y="245"
+          textAnchor="middle"
           className="text-xs fill-gray-700 dark:fill-gray-300"
           style={{ fontFamily: "system-ui, sans-serif", fontSize: "11px" }}
         >
           Savings
         </text>
       </g>
-
-      {/* Stats Badge - Dipindah ke kanan atas chart */}
-      <rect
-        x="300"
-        y="60"
-        width="70"
-        height="32"
-        rx="6"
-        className="fill-emerald-500/20 dark:fill-emerald-600/20 transition-colors duration-300"
-      />
-      <text
-        x="335"
-        y="75"
-        textAnchor="middle"
-        className="text-xs font-bold fill-emerald-700 dark:fill-emerald-400 transition-colors duration-300"
-        style={{
-          fontFamily: "system-ui, sans-serif",
-          fontSize: "10px",
-          fontWeight: "bold",
-        }}
-      >
-        +12.5%
-      </text>
-      <text
-        x="335"
-        y="88"
-        textAnchor="middle"
-        className="text-xs fill-emerald-600 dark:fill-emerald-300 transition-colors duration-300"
-        style={{ fontFamily: "system-ui, sans-serif", fontSize: "9px" }}
-      >
-        This Month
-      </text>
     </svg>
   );
 };
-
 export default BoxFinanceIllustration;
