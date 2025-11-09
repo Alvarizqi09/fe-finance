@@ -3,6 +3,7 @@ import Input from "./Input";
 import Select from "./Select";
 import EmojiPickerPopup from "./EmojiPickerPopup";
 import { EXPENSE_SOURCES } from "../utils/data";
+import { FaSpinner } from "react-icons/fa";
 
 const AddExpenseForm = ({ onAddExpense }) => {
   const [expense, setExpense] = useState({
@@ -11,9 +12,19 @@ const AddExpenseForm = ({ onAddExpense }) => {
     date: "",
     icon: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (key, value) => {
     setExpense({ ...expense, [key]: value });
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    try {
+      await onAddExpense(expense);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -48,10 +59,20 @@ const AddExpenseForm = ({ onAddExpense }) => {
       <div className="flex justify-end mt-6">
         <button
           type="submit"
-          className="add-btn add-btn-fill dark:bg-gradient-to-r dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700"
-          onClick={() => onAddExpense(expense)}
+          disabled={isLoading}
+          className={`add-btn add-btn-fill dark:bg-gradient-to-r dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700 ${
+            isLoading ? "opacity-70 cursor-not-allowed" : ""
+          }`}
+          onClick={handleSubmit}
         >
-          Add Expense
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <FaSpinner className="animate-spin" />
+              Loading...
+            </span>
+          ) : (
+            "Add Expense"
+          )}
         </button>
       </div>
     </div>

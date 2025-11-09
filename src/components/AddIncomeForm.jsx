@@ -3,6 +3,7 @@ import Input from "./Input";
 import Select from "./Select";
 import EmojiPickerPopup from "./EmojiPickerPopup";
 import { INCOME_SOURCES } from "../utils/data";
+import { FaSpinner } from "react-icons/fa";
 
 const AddIncomeForm = ({ onAddIncome }) => {
   const [income, setIncome] = useState({
@@ -11,9 +12,19 @@ const AddIncomeForm = ({ onAddIncome }) => {
     date: "",
     icon: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (key, value) => {
     setIncome({ ...income, [key]: value });
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    try {
+      await onAddIncome(income);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -47,10 +58,20 @@ const AddIncomeForm = ({ onAddIncome }) => {
       <div className="flex justify-end mt-6">
         <button
           type="submit"
-          className="add-btn add-btn-fill dark:bg-gradient-to-r dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700"
-          onClick={() => onAddIncome(income)}
+          disabled={isLoading}
+          className={`add-btn add-btn-fill dark:bg-gradient-to-r dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700 ${
+            isLoading ? "opacity-70 cursor-not-allowed" : ""
+          }`}
+          onClick={handleSubmit}
         >
-          Add Income
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <FaSpinner className="animate-spin" />
+              Loading...
+            </span>
+          ) : (
+            "Add Income"
+          )}
         </button>
       </div>
     </div>
