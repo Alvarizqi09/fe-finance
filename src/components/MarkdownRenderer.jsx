@@ -1,31 +1,16 @@
-// components/MarkdownRenderer.jsx
-import React from "react";
-
 const MarkdownRenderer = ({ text }) => {
   if (!text) return null;
 
-  // Clean text function
   const cleanText = (content) => {
     if (!content) return "";
 
     let cleaned = content;
 
-    // Multiple cleaning passes
-    for (let i = 0; i < 3; i++) {
-      // Fix duplicate phrases with colon
-      cleaned = cleaned.replace(/([A-Za-z\u00C0-\u024F\s]+):\s*\1:/g, "$1:");
+    // Only clean duplicate WORDS, not numbers
+    // Use Unicode letter class to match only letters, not digits
+    cleaned = cleaned.replace(/\b([A-Za-z\u00C0-\u024F]+)\s+\1\b/gi, "$1");
 
-      // Fix duplicate Rupiah amounts
-      cleaned = cleaned.replace(/(Rp\s*[\d.,]+)\s*Rp\s*[\d.,]+/gi, "$1");
-
-      // Fix duplicate words
-      cleaned = cleaned.replace(/(\b[\w\u00C0-\u024F]+\b)\s+\1\b/gi, "$1");
-
-      // Fix duplicate numbers
-      cleaned = cleaned.replace(/(\d+)\s*\1\b/g, "$1");
-    }
-
-    // Remove italic markers (single asterisks)
+    // Remove italic markers (single asterisks) but keep bold (**)
     cleaned = cleaned.replace(/(?<!\*)\*(?!\*)([^*]+?)(?<!\*)\*(?!\*)/g, "$1");
 
     return cleaned.trim();
@@ -99,7 +84,6 @@ const MarkdownRenderer = ({ text }) => {
     const cleanedContent = cleanText(content);
 
     // Split by bullet markers (• or numbered lists)
-    // This regex will split BEFORE each bullet/number
     const parts = cleanedContent.split(/(?=•|\n•|\s•|^\d+\.|\n\d+\.)/);
 
     return parts.map((part) => part.trim()).filter((part) => part.length > 0);
