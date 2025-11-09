@@ -3,6 +3,7 @@ import { UserContext } from "../context/UserContextObject";
 import { useNavigate } from "react-router-dom";
 import { SIDE_MENU_DATA } from "../utils/data";
 import CharAvatar from "./CharAvatar";
+import { FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
 
 const Sidebar = ({ activeMenu }) => {
   const { user, clearUser } = useContext(UserContext);
@@ -66,7 +67,7 @@ const Sidebar = ({ activeMenu }) => {
       </div>
 
       {/* Logo at bottom */}
-      <div className="mt-auto pt-6 sm:pt-8 flex justify-center items-center">
+      <div className="mt-auto pt-6 sm:pt-8 flex flex-col items-center gap-4">
         <img
           src="/logo-transparent.png"
           alt="Finance App Logo"
@@ -75,6 +76,37 @@ const Sidebar = ({ activeMenu }) => {
             e.target.style.display = "none";
           }}
         />
+
+        {/* Social Media Icons */}
+        <div className="flex gap-4 items-center justify-center">
+          <a
+            href="https://instagram.com/alvarizqi__"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 hover:text-pink-600 transition-colors"
+            title="Instagram"
+          >
+            <FaInstagram className="text-xl sm:text-2xl" />
+          </a>
+          <a
+            href="https://github.com/Alvarizqi09"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 hover:text-gray-900 transition-colors"
+            title="GitHub"
+          >
+            <FaGithub className="text-xl sm:text-2xl" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/alvarizqi/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 hover:text-blue-600 transition-colors"
+            title="LinkedIn"
+          >
+            <FaLinkedin className="text-xl sm:text-2xl" />
+          </a>
+        </div>
       </div>
     </div>
   );
