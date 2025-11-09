@@ -22,7 +22,7 @@ const Input = ({
     if (type === "date" && !value) {
       return (
         <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
-          {placeholder || "Select date"}
+          {placeholder || ""}
         </span>
       );
     }
