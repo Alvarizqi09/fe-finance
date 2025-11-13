@@ -99,20 +99,20 @@ const SignUp = () => {
         onClose={() => setShowError(false)}
       />
       <div className="w-full">
-        <div className="text-center mb-6">
-          <h3 className="text-2xl md:text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 tracking-tight">
+        <div className="text-center mb-4 sm:mb-6">
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-1 sm:mb-2 tracking-tight">
             Create Account
           </h3>
-          <p className="text-emerald-600/80 dark:text-gray-300 text-sm font-medium leading-relaxed">
+          <p className="text-emerald-600/80 dark:text-gray-300 text-xs sm:text-sm font-medium leading-relaxed px-2">
             Join us and start managing your finances
           </p>
         </div>
-        <div className="space-y-5">
-          <form onSubmit={handleSignUp} className="space-y-4">
-            <div className="flex justify-center mb-4">
+        <div className="space-y-4 sm:space-y-5">
+          <form onSubmit={handleSignUp} className="space-y-3 sm:space-y-4">
+            <div className="flex justify-center mb-3 sm:mb-4">
               <ProfilePhotoSelector image={profile} setImage={setProfile} />
             </div>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <Input
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
@@ -121,7 +121,7 @@ const SignUp = () => {
                 placeholder="Enter your full name"
               />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -141,7 +141,7 @@ const SignUp = () => {
             </div>
             <button
               type="submit"
-              className="btn-primary relative overflow-hidden group dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700"
+              className="btn-primary w-full relative overflow-hidden group dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700"
             >
               <span className="relative z-10 flex items-center justify-center">
                 <svg
@@ -161,11 +161,11 @@ const SignUp = () => {
               </span>
             </button>
           </form>
-          <div className="relative my-6">
+          <div className="relative my-4 sm:my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
             </div>
-            <div className="relative flex justify-center text-sm">
+            <div className="relative flex justify-center text-xs sm:text-sm">
               <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
                 Or sign up with
               </span>
@@ -174,13 +174,13 @@ const SignUp = () => {
           <button
             type="button"
             onClick={initiateGoogleLogin}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors font-medium text-gray-700 dark:text-gray-200"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors font-medium text-xs sm:text-sm text-gray-700 dark:text-gray-200"
           >
-            <FcGoogle className="w-5 h-5" />
-            Sign up with Google
+            <FcGoogle className="w-5 h-5 flex-shrink-0" />
+            <span>Sign up with Google</span>
           </button>
           <div className="text-center pt-4 border-t border-gray-200 dark:border-gray-700">
-            <p className="text-emerald-600/80 dark:text-gray-400 text-sm">
+            <p className="text-emerald-600/80 dark:text-gray-400 text-xs sm:text-sm">
               Already have an account?{" "}
               <button
                 type="button"

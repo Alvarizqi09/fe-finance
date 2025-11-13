@@ -36,7 +36,6 @@ function AppRoutes() {
   const { updateUser } = useContext(UserContext);
 
   useEffect(() => {
-    // Handle Google OAuth callback
     if (
       location.pathname === "/dashboard" ||
       location.pathname === "/" ||

@@ -79,20 +79,20 @@ const Login = () => {
         onClose={() => setShowError(false)}
       />
       <div className="w-full">
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl shadow-xl shadow-emerald-200/50 dark:shadow-emerald-800/30 mb-4 backdrop-blur-xl">
-            <LuLockKeyhole className="w-8 h-8 text-white" />
+        <div className="text-center mb-4 sm:mb-6">
+          <div className="inline-flex items-center justify-center w-12 sm:w-14 h-12 sm:h-14 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl shadow-xl shadow-emerald-200/50 dark:shadow-emerald-800/30 mb-3 sm:mb-4 backdrop-blur-xl">
+            <LuLockKeyhole className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
           </div>
-          <h3 className="text-2xl md:text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 tracking-tight">
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-emerald-700 dark:text-emerald-400 mb-1 sm:mb-2 tracking-tight">
             Welcome Back
           </h3>
-          <p className="text-emerald-600/80 dark:text-gray-300 text-sm font-medium leading-relaxed">
+          <p className="text-emerald-600/80 dark:text-gray-300 text-xs sm:text-sm font-medium leading-relaxed px-2">
             Sign in to continue managing your finances
           </p>
         </div>
-        <div className="space-y-6 mt-6">
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div className="space-y-4">
+        <div className="space-y-4 sm:space-y-6 mt-6">
+          <form onSubmit={handleLogin} className="space-y-4 sm:space-y-5">
+            <div className="space-y-3 sm:space-y-4">
               <Input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -119,7 +119,7 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="btn-primary relative overflow-hidden group dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700"
+              className="btn-primary w-full relative overflow-hidden group dark:from-emerald-600 dark:to-teal-600 dark:hover:from-emerald-700 dark:hover:to-teal-700"
             >
               <span className="relative z-10 flex items-center justify-center">
                 <IoLogInOutline className="mr-2 w-5 h-5" />
@@ -127,11 +127,11 @@ const Login = () => {
               </span>
             </button>
           </form>
-          <div className="relative my-6">
+          <div className="relative my-4 sm:my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
             </div>
-            <div className="relative flex justify-center text-sm">
+            <div className="relative flex justify-center text-xs sm:text-sm">
               <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
                 Or continue with
               </span>
@@ -140,13 +140,13 @@ const Login = () => {
           <button
             type="button"
             onClick={initiateGoogleLogin}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors font-medium text-gray-700 dark:text-gray-200"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors font-medium text-xs sm:text-sm text-gray-700 dark:text-gray-200"
           >
-            <FcGoogle className="w-5 h-5" />
-            Sign in with Google
+            <FcGoogle className="w-5 h-5 flex-shrink-0" />
+            <span>Sign in with Google</span>
           </button>
           <div className="text-center border-t border-gray-200 dark:border-gray-700 pt-4">
-            <p className="text-emerald-600/80 dark:text-gray-400 text-sm">
+            <p className="text-emerald-600/80 dark:text-gray-400 text-xs sm:text-sm">
               Don't have an account?{" "}
               <button
                 type="button"
