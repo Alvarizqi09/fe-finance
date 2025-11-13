@@ -12,9 +12,13 @@ import SignUp from "./pages/Auth/SignUp";
 import Home from "./pages/Dashboard/Home";
 import { Income } from "./pages/Dashboard/Income";
 import Expense from "./pages/Dashboard/Expense";
-import UserProvider from "./context/UserContext";
+import UserProvider from "./context/userContext";
 import { Toaster } from "react-hot-toast";
 import AIChatbot from "./components/AIChatbot";
+import { handleGoogleAuthCallback } from "./utils/googleAuthHandler";
+import { useContext, useEffect } from "react";
+import { UserContext } from "./context/UserContextObject";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   return (
@@ -28,6 +32,20 @@ function App() {
 
 function AppRoutes() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { updateUser } = useContext(UserContext);
+
+  useEffect(() => {
+    // Handle Google OAuth callback
+    if (
+      location.pathname === "/dashboard" ||
+      location.pathname === "/" ||
+      location.search.includes("token=")
+    ) {
+      handleGoogleAuthCallback(updateUser, navigate);
+    }
+  }, [location, updateUser, navigate]);
+
   const showChatbot =
     location.pathname !== "/login" && location.pathname !== "/signup";
   return (

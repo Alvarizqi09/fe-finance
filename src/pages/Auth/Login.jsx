@@ -10,6 +10,8 @@ import { API_PATHS } from "../../utils/apiPaths";
 import { UserContext } from "../../context/UserContextObject";
 import { LuLockKeyhole } from "react-icons/lu";
 import { IoLogInOutline } from "react-icons/io5";
+import { FcGoogle } from "react-icons/fc";
+import { initiateGoogleLogin } from "../../utils/googleAuthHandler";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -125,6 +127,24 @@ const Login = () => {
               </span>
             </button>
           </form>
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">
+                Or continue with
+              </span>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={initiateGoogleLogin}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors font-medium text-gray-700 dark:text-gray-200"
+          >
+            <FcGoogle className="w-5 h-5" />
+            Sign in with Google
+          </button>
           <div className="text-center border-t border-gray-200 dark:border-gray-700 pt-4">
             <p className="text-emerald-600/80 dark:text-gray-400 text-sm">
               Don't have an account?{" "}
