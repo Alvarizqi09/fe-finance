@@ -7,7 +7,7 @@ const AuthLayout = ({ children }) => {
   return (
     <div className="flex min-h-screen w-full overflow-hidden">
       {/* Left Side - Form */}
-      <div className="w-full md:w-[60%] h-screen md:h-auto overflow-y-auto px-6 sm:px-8 md:px-12 py-6 md:py-8 flex flex-col bg-gradient-to-br from-emerald-50/90 to-teal-50/90 dark:from-gray-800 dark:to-gray-900">
+      <div className="w-full md:w-[60%] md:h-screen md:overflow-y-auto px-6 sm:px-8 md:px-12 py-6 md:py-8 flex flex-col bg-gradient-to-br from-emerald-50/90 to-teal-50/90 dark:from-gray-800 dark:to-gray-900">
         <h2 className="text-lg sm:text-xl font-semibold text-emerald-700 dark:text-emerald-400 mb-6 flex-shrink-0">
           Stack It
         </h2>
