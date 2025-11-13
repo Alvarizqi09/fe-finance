@@ -3,9 +3,10 @@ const BoxFinanceIllustration = () => {
   return (
     <svg
       viewBox="0 0 400 280"
-      className="w-full h-auto"
+      className="w-full h-full max-w-2xl"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="xMidYMid meet"
     >
       {/* Main Container Box */}
       <rect
