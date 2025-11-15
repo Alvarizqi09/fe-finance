@@ -184,7 +184,7 @@ const Savings = () => {
               Terkumpul
             </p>
             <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
-              {formatCurrency(summary.totalSavings)}
+              {formatCurrency(summary.totalSaved)}
             </p>
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
