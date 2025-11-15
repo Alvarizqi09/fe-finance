@@ -228,11 +228,11 @@ const Savings = () => {
         </button>
       </div>
 
-      {/* Goals Grid */}
+      {/* Goals List */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div>
           {[...Array(6)].map((_, i) => (
-            <SkeletonLoading key={i} height="400px" />
+            <SkeletonLoading key={i} height="60px" />
           ))}
         </div>
       ) : goals.length === 0 ? (
@@ -248,7 +248,7 @@ const Savings = () => {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div>
           {goals.map((goal) => (
             <SavingsGoalCard
               key={goal._id}
