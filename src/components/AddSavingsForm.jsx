@@ -14,7 +14,7 @@ const CATEGORIES = [
   { value: "other", label: "Lainnya" },
 ];
 
-const CreateSavingsModal = ({ isOpen, onClose, onSuccess, editingGoal }) => {
+const AddSavingsForm = ({ isOpen, onClose, onSuccess, editingGoal }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
@@ -297,4 +297,4 @@ const CreateSavingsModal = ({ isOpen, onClose, onSuccess, editingGoal }) => {
   );
 };
 
-export default CreateSavingsModal;
+export default AddSavingsForm;

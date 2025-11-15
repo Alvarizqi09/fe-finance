@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { LuPlus, LuDownload } from "react-icons/lu";
 import DashboardLayout from "../../components/DashboardLayout";
 import SavingsGoalCard from "../../components/SavingsGoalCard";
-import CreateSavingsModal from "../../components/CreateSavingsModal";
+import AddSavingsForm from "../../components/AddSavingsForm";
 import ManualContributionModal from "../../components/ManualContributionModal";
 import AutoContributeModal from "../../components/AutoContributeModal";
 import DeleteAlert from "../../components/DeleteAlert";
+import Modal from "../../components/Modal";
 import LoadingPopup from "../../components/LoadingPopup";
 import ErrorPopup from "../../components/ErrorPopup";
 import SkeletonLoading from "../../components/SkeletonLoading";
@@ -33,7 +34,6 @@ const Savings = () => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [editingGoal, setEditingGoal] = useState(null);
-  const [deleting, setDeleting] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
   // Load goals on mount
@@ -85,7 +85,6 @@ const Savings = () => {
   };
 
   const handleDeleteGoal = async () => {
-    setDeleting(true);
     try {
       await deleteSavingsGoal(selectedGoal._id);
       toast.success("Goal berhasil dihapus!");
@@ -95,8 +94,6 @@ const Savings = () => {
     } catch {
       setError("Gagal menghapus goal");
       setShowError(true);
-    } finally {
-      setDeleting(false);
     }
   };
 
@@ -121,7 +118,7 @@ const Savings = () => {
         text={error}
         onClose={() => setShowError(false)}
       />
-      <CreateSavingsModal
+      <AddSavingsForm
         isOpen={showCreateModal}
         onClose={() => {
           setShowCreateModal(false);
@@ -148,14 +145,16 @@ const Savings = () => {
         onSuccess={handleToggleAuto}
         goal={selectedGoal}
       />
-      <DeleteAlert
+      <Modal
         isOpen={showDeleteAlert}
+        onClose={() => setShowDeleteAlert(false)}
         title="Hapus Goal"
-        message={`Apakah Anda yakin ingin menghapus goal "${selectedGoal?.goalName}"?`}
-        onConfirm={handleDeleteGoal}
-        onCancel={() => setShowDeleteAlert(false)}
-        loading={deleting}
-      />
+      >
+        <DeleteAlert
+          content={`Apakah Anda yakin ingin menghapus goal "${selectedGoal?.goalName}"?`}
+          onDelete={handleDeleteGoal}
+        />
+      </Modal>
 
       {/* Header */}
       <div className="mb-8">
@@ -171,15 +170,15 @@ const Savings = () => {
       {/* Summary Cards */}
       {summary && !loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+          <div className="card">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
               Total Goals
             </p>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white">
+            <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
               {summary.totalGoals}
             </p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+          <div className="card">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
               Terkumpul
             </p>
@@ -187,7 +186,7 @@ const Savings = () => {
               {formatCurrency(summary.totalSaved)}
             </p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+          <div className="card">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
               Total Target
             </p>
@@ -195,7 +194,7 @@ const Savings = () => {
               {formatCurrency(summary.totalTarget)}
             </p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+          <div className="card">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
               Completed
             </p>

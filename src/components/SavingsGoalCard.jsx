@@ -20,9 +20,9 @@ const SavingsGoalCard = ({
   };
 
   return (
-    <div className="group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-100/20">
+    <div className="card group relative flex items-center gap-4">
       {/* Icon */}
-      <div className="w-12 h-12 flex items-center justify-center text-2xl bg-gray-100 dark:bg-gray-700 rounded-full flex-shrink-0">
+      <div className="w-12 h-12 flex items-center justify-center text-2xl bg-white/60 dark:bg-gray-700/60 rounded-full flex-shrink-0">
         {goal.icon}
       </div>
 
