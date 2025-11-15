@@ -4,6 +4,7 @@ import Input from "./Input";
 import Select from "./Select";
 import LoadingPopup from "./LoadingPopup";
 import ErrorPopup from "./ErrorPopup";
+import { FormSkeleton } from "./SkeletonLoading";
 
 const EMOJI_ICONS = ["💰", "✈️", "🎓", "🏠", "💊", "🚗", "📱", "🎮", "🎵"];
 const CATEGORIES = [
@@ -18,6 +19,7 @@ const AddSavingsForm = ({ isOpen, onClose, onSuccess, editingGoal }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(false);
 
   const [formData, setFormData] = useState({
     goalName: "",
@@ -32,34 +34,43 @@ const AddSavingsForm = ({ isOpen, onClose, onSuccess, editingGoal }) => {
   });
 
   useEffect(() => {
-    if (editingGoal) {
-      setFormData({
-        goalName: editingGoal.goalName,
-        targetAmount: editingGoal.targetAmount.toString(),
-        icon: editingGoal.icon,
-        description: editingGoal.description || "",
-        targetDate: editingGoal.targetDate
-          ? editingGoal.targetDate.split("T")[0]
-          : "",
-        category: editingGoal.category,
-        autoContribute: editingGoal.autoContribute?.enabled || false,
-        autoAmount: editingGoal.autoContribute?.amount?.toString() || "",
-        frequency: editingGoal.autoContribute?.frequency || "monthly",
-      });
-    } else {
-      setFormData({
-        goalName: "",
-        targetAmount: "",
-        icon: "💰",
-        description: "",
-        targetDate: "",
-        category: "other",
-        autoContribute: false,
-        autoAmount: "",
-        frequency: "monthly",
-      });
-    }
-    setError("");
+    if (!isOpen) return;
+
+    setIsInitializing(true);
+    // Simulate form initialization
+    const timer = setTimeout(() => {
+      if (editingGoal) {
+        setFormData({
+          goalName: editingGoal.goalName,
+          targetAmount: editingGoal.targetAmount.toString(),
+          icon: editingGoal.icon,
+          description: editingGoal.description || "",
+          targetDate: editingGoal.targetDate
+            ? editingGoal.targetDate.split("T")[0]
+            : "",
+          category: editingGoal.category,
+          autoContribute: editingGoal.autoContribute?.enabled || false,
+          autoAmount: editingGoal.autoContribute?.amount?.toString() || "",
+          frequency: editingGoal.autoContribute?.frequency || "monthly",
+        });
+      } else {
+        setFormData({
+          goalName: "",
+          targetAmount: "",
+          icon: "💰",
+          description: "",
+          targetDate: "",
+          category: "other",
+          autoContribute: false,
+          autoAmount: "",
+          frequency: "monthly",
+        });
+      }
+      setError("");
+      setIsInitializing(false);
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, [isOpen, editingGoal]);
 
   const handleChange = (e) => {
@@ -128,6 +139,10 @@ const AddSavingsForm = ({ isOpen, onClose, onSuccess, editingGoal }) => {
   };
 
   if (!isOpen) return null;
+
+  if (isInitializing) {
+    return <FormSkeleton />;
+  }
 
   return (
     <>

@@ -1,5 +1,6 @@
 import React from "react";
-import { LuPencil, LuTrash2 } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
+import { LuPencil, LuTrash2, LuHistory } from "react-icons/lu";
 import { formatCurrency, calculateProgress } from "../utils/savingsApi";
 
 const SavingsGoalCard = ({
@@ -9,6 +10,7 @@ const SavingsGoalCard = ({
   onAddContribution,
   onAutoSettings,
 }) => {
+  const navigate = useNavigate();
   const progress = calculateProgress(goal.currentAmount, goal.targetAmount);
   const remaining = goal.targetAmount - goal.currentAmount;
 
@@ -87,6 +89,14 @@ const SavingsGoalCard = ({
             title="Edit"
           >
             <LuPencil size={18} />
+          </button>
+
+          <button
+            onClick={() => navigate(`/savings/${goal._id}/history`)}
+            className="text-gray-500 dark:text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 cursor-pointer transition-colors"
+            title="Riwayat"
+          >
+            <LuHistory size={18} />
           </button>
 
           <button

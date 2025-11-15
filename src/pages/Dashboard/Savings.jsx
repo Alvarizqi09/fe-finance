@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { LuPlus, LuDownload } from "react-icons/lu";
 import DashboardLayout from "../../components/DashboardLayout";
 import SavingsGoalCard from "../../components/SavingsGoalCard";
@@ -10,6 +11,7 @@ import Modal from "../../components/Modal";
 import LoadingPopup from "../../components/LoadingPopup";
 import ErrorPopup from "../../components/ErrorPopup";
 import SkeletonLoading from "../../components/SkeletonLoading";
+import FailedContributionsNotifier from "../../components/FailedContributionsNotifier";
 import {
   getAllSavingsGoals,
   createSavingsGoal,
@@ -23,96 +25,143 @@ import {
 import toast from "react-hot-toast";
 
 const Savings = () => {
-  const [goals, setGoals] = useState([]);
-  const [summary, setSummary] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [showError, setShowError] = useState(false);
+  const queryClient = useQueryClient();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showContributionModal, setShowContributionModal] = useState(false);
   const [showAutoModal, setShowAutoModal] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [editingGoal, setEditingGoal] = useState(null);
-  const [downloading, setDownloading] = useState(false);
+  const [error, setError] = useState("");
+  const [showError, setShowError] = useState(false);
 
-  // Load goals on mount
-  useEffect(() => {
-    loadGoals();
-  }, []);
+  // Fetch goals
+  const { data: goalsData, isPending: isLoading } = useQuery({
+    queryKey: ["savingsGoals"],
+    queryFn: getAllSavingsGoals,
+  });
 
-  const loadGoals = async () => {
-    setLoading(true);
-    try {
-      const data = await getAllSavingsGoals();
-      setGoals(data.goals || []);
-      setSummary(data.summary);
-      setError("");
-    } catch {
-      setError("Gagal memuat data savings");
+  const goals = goalsData?.goals || [];
+  const summary = goalsData?.summary || null;
+
+  // Create goal mutation
+  const createMutation = useMutation({
+    mutationFn: (goalData) => createSavingsGoal(goalData),
+    onSuccess: () => {
+      toast.success("Goal berhasil dibuat!");
+      queryClient.invalidateQueries({ queryKey: ["savingsGoals"] });
+      setShowCreateModal(false);
+    },
+    onError: () => {
+      toast.error("Gagal membuat goal");
+    },
+  });
+
+  // Update goal mutation
+  const updateMutation = useMutation({
+    mutationFn: ({ goalId, goalData }) => updateSavingsGoal(goalId, goalData),
+    onSuccess: () => {
+      toast.success("Goal berhasil diupdate!");
+      queryClient.invalidateQueries({ queryKey: ["savingsGoals"] });
+      setShowCreateModal(false);
+      setEditingGoal(null);
+    },
+    onError: () => {
+      toast.error("Gagal mengupdate goal");
+    },
+  });
+
+  // Add contribution mutation
+  const contributionMutation = useMutation({
+    mutationFn: ({ savingsId, amount, note }) =>
+      addManualContribution(savingsId, amount, note),
+    onSuccess: () => {
+      toast.success("Kontribusi berhasil ditambahkan!");
+      queryClient.invalidateQueries({ queryKey: ["savingsGoals"] });
+      setShowContributionModal(false);
+      setSelectedGoal(null);
+    },
+    onError: () => {
+      toast.error("Gagal menambahkan kontribusi");
+    },
+  });
+
+  // Toggle auto-contribute mutation
+  const autoMutation = useMutation({
+    mutationFn: ({ savingsId, enabled, amount, frequency }) =>
+      toggleAutoContribute(savingsId, enabled, amount, frequency),
+    onSuccess: (_, variables) => {
+      toast.success(
+        variables.enabled
+          ? "Auto-contribute berhasil diaktifkan!"
+          : "Auto-contribute berhasil dinonaktifkan!"
+      );
+      queryClient.invalidateQueries({ queryKey: ["savingsGoals"] });
+      setShowAutoModal(false);
+      setSelectedGoal(null);
+    },
+    onError: () => {
+      toast.error("Gagal mengubah auto-contribute");
+    },
+  });
+
+  // Delete goal mutation
+  const deleteMutation = useMutation({
+    mutationFn: (goalId) => deleteSavingsGoal(goalId),
+    onSuccess: () => {
+      toast.success("Goal berhasil dihapus!");
+      queryClient.invalidateQueries({ queryKey: ["savingsGoals"] });
+      setShowDeleteAlert(false);
+      setSelectedGoal(null);
+    },
+    onError: () => {
+      setError("Gagal menghapus goal");
       setShowError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+  });
+
+  // Download report mutation
+  const downloadMutation = useMutation({
+    mutationFn: downloadSavingsReport,
+    onSuccess: () => {
+      toast.success("Report berhasil diunduh!");
+    },
+    onError: () => {
+      setError("Gagal mengunduh report");
+      setShowError(true);
+    },
+  });
 
   const handleCreateGoal = async (goalData, editId) => {
     if (editId) {
-      await updateSavingsGoal(editId, goalData);
-      toast.success("Goal berhasil diupdate!");
+      updateMutation.mutate({ goalId: editId, goalData });
     } else {
-      await createSavingsGoal(goalData);
-      toast.success("Goal berhasil dibuat!");
+      createMutation.mutate(goalData);
     }
-    await loadGoals();
-    setEditingGoal(null);
   };
 
   const handleAddContribution = async (savingsId, amount, note) => {
-    await addManualContribution(savingsId, amount, note);
-    toast.success("Kontribusi berhasil ditambahkan!");
-    await loadGoals();
+    contributionMutation.mutate({ savingsId, amount, note });
   };
 
   const handleToggleAuto = async (savingsId, enabled, amount, frequency) => {
-    await toggleAutoContribute(savingsId, enabled, amount, frequency);
-    toast.success(
-      enabled
-        ? "Auto-contribute berhasil diaktifkan!"
-        : "Auto-contribute berhasil dinonaktifkan!"
-    );
-    await loadGoals();
+    autoMutation.mutate({ savingsId, enabled, amount, frequency });
   };
 
   const handleDeleteGoal = async () => {
-    try {
-      await deleteSavingsGoal(selectedGoal._id);
-      toast.success("Goal berhasil dihapus!");
-      await loadGoals();
-      setShowDeleteAlert(false);
-      setSelectedGoal(null);
-    } catch {
-      setError("Gagal menghapus goal");
-      setShowError(true);
-    }
+    deleteMutation.mutate(selectedGoal._id);
   };
 
   const handleDownloadReport = async () => {
-    setDownloading(true);
-    try {
-      await downloadSavingsReport();
-      toast.success("Report berhasil diunduh!");
-    } catch {
-      setError("Gagal mengunduh report");
-      setShowError(true);
-    } finally {
-      setDownloading(false);
-    }
+    downloadMutation.mutate();
   };
 
   return (
     <DashboardLayout>
-      <LoadingPopup show={downloading} text="Mengunduh report..." />
+      <LoadingPopup
+        show={downloadMutation.isPending}
+        text="Mengunduh report..."
+      />
       <ErrorPopup
         show={showError}
         text={error}
@@ -158,17 +207,19 @@ const Savings = () => {
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Savings & Goals
+        <h1
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6"
+          loading="eager"
+        >
+          Savings Overview
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Kelola dan pantau target tabungan Anda dengan fitur kontribusi manual
-          dan otomatis
-        </p>
       </div>
 
+      {/* Failed Contributions Alert */}
+      {goals.length > 0 && <FailedContributionsNotifier goals={goals} />}
+
       {/* Summary Cards */}
-      {summary && !loading && (
+      {summary && !isLoading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <div className="card">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
@@ -219,7 +270,7 @@ const Savings = () => {
         </button>
         <button
           onClick={handleDownloadReport}
-          disabled={downloading}
+          disabled={downloadMutation.isPending}
           className="flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex-1 sm:flex-none disabled:opacity-50"
         >
           <LuDownload className="w-5 h-5" />
@@ -228,7 +279,7 @@ const Savings = () => {
       </div>
 
       {/* Goals List */}
-      {loading ? (
+      {isLoading ? (
         <div>
           {[...Array(6)].map((_, i) => (
             <SkeletonLoading key={i} height="60px" />

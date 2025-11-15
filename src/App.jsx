@@ -13,6 +13,7 @@ import Home from "./pages/Dashboard/Home";
 import { Income } from "./pages/Dashboard/Income";
 import Expense from "./pages/Dashboard/Expense";
 import Savings from "./pages/Dashboard/Savings";
+import ContributionHistory from "./pages/Dashboard/ContributionHistory";
 import UserProvider from "./context/UserContext";
 import { Toaster } from "react-hot-toast";
 import AIChatbot from "./components/AIChatbot";
@@ -59,6 +60,10 @@ function AppRoutes() {
           <Route path="/income" element={<Income />} />
           <Route path="/expense" element={<Expense />} />
           <Route path="/savings" element={<Savings />} />
+          <Route
+            path="/savings/:goalId/history"
+            element={<ContributionHistory />}
+          />
         </Routes>
       </div>
 

@@ -169,3 +169,62 @@ export const ExpensePageSkeleton = () => {
 };
 
 export default DashboardGridSkeleton;
+
+// Skeleton untuk Form Modal
+export const FormSkeleton = () => {
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="sticky top-0 bg-white dark:bg-gray-800 flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 z-10">
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-32 animate-pulse"></div>
+          <div className="w-5 h-5 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+        </div>
+
+        {/* Form */}
+        <div className="p-6 space-y-4">
+          {/* Icon Picker */}
+          <div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20 mb-2 animate-pulse"></div>
+            <div className="flex gap-2 flex-wrap">
+              {[...Array(9)].map((_, i) => (
+                <div
+                  key={i}
+                  className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"
+                ></div>
+              ))}
+            </div>
+          </div>
+
+          {/* Input Fields */}
+          {[...Array(4)].map((_, i) => (
+            <div key={i}>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24 mb-2 animate-pulse"></div>
+              <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+            </div>
+          ))}
+
+          {/* Textarea */}
+          <div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24 mb-2 animate-pulse"></div>
+            <div className="h-20 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+          </div>
+
+          {/* Checkbox */}
+          <div className="border-t pt-4 border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-4 h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-40 animate-pulse"></div>
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-3 pt-4">
+            <div className="flex-1 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+            <div className="flex-1 h-10 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
