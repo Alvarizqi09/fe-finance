@@ -206,7 +206,7 @@ const Savings = () => {
       </Modal>
 
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-2 mt-4">
         <h1
           className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6"
           loading="eager"
@@ -298,7 +298,7 @@ const Savings = () => {
           </button>
         </div>
       ) : (
-        <div>
+        <div className="space-y-3">
           {goals.map((goal) => (
             <SavingsGoalCard
               key={goal._id}

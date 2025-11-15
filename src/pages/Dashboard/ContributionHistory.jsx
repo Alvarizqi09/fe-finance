@@ -34,9 +34,7 @@ const ContributionHistory = () => {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Goal tidak ditemukan
-          </p>
+          <p className="text-gray-600 mb-4">Goal tidak ditemukan</p>
           <button
             onClick={() => navigate("/savings")}
             className="px-6 py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg transition-colors"
@@ -62,49 +60,46 @@ const ContributionHistory = () => {
   return (
     <DashboardLayout>
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-2">
         <button
           onClick={() => navigate("/savings")}
-          className="flex items-center gap-2 px-4 py-2 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 rounded-lg transition-colors mb-4"
+          className="flex items-center gap-2 px-4 py-2 text-emerald-600 hover:bg-emerald-100 rounded-lg transition-colors mb-4"
         >
           <LuArrowLeft className="w-4 h-4" />
           Kembali
         </button>
-
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          {goal.icon} {goal.goalName}
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Riwayat kontribusi dan ringkasan progress
-        </p>
+        <div className="flex flex-row items-center justify-between">
+          <h1
+            className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6"
+            loading="eager"
+          >
+            {goal.icon} {goal.goalName}
+          </h1>
+        </div>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="card">
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-            Total Terkumpul
-          </p>
-          <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+          <p className="text-sm text-gray-600 mb-2">Total Terkumpul</p>
+          <p className="text-2xl font-bold text-emerald-600 ">
             {formatCurrency(goal.currentAmount)}
           </p>
-          <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+          <p className="text-xs text-gray-500 mt-2">
             Target: {formatCurrency(goal.targetAmount)}
           </p>
         </div>
 
         <div className="card">
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-            Total Kontribusi
-          </p>
-          <p className="text-2xl font-bold text-teal-600 dark:text-teal-400">
+          <p className="text-sm text-gray-600 mb-2">Total Kontribusi</p>
+          <p className="text-2xl font-bold text-teal-600 ">
             {successContributions.length}
           </p>
         </div>
 
         <div className="card">
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Gagal</p>
-          <p className="text-2xl font-bold text-red-600 dark:text-red-400">
+          <p className="text-sm text-gray-600 mb-2">Gagal</p>
+          <p className="text-2xl font-bold text-red-600 ">
             {failedContributions.length}
           </p>
         </div>
@@ -113,14 +108,12 @@ const ContributionHistory = () => {
       {/* Progress Bar */}
       <div className="card mb-8">
         <div className="flex justify-between items-center mb-2">
-          <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Progress
-          </p>
-          <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+          <p className="text-sm font-semibold text-gray-700 mb-2">Progress</p>
+          <p className="text-sm font-semibold text-emerald-600 mb-2">
             {Math.round((goal.currentAmount / goal.targetAmount) * 100)}%
           </p>
         </div>
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+        <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
           <div
             className="bg-gradient-to-r from-emerald-400 to-teal-500 h-full transition-all duration-300"
             style={{
@@ -135,15 +128,13 @@ const ContributionHistory = () => {
 
       {/* Contribution History */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-sm sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-6">
           Riwayat Kontribusi
         </h2>
 
         {contributions.length === 0 ? (
           <div className="card text-center py-8">
-            <p className="text-gray-600 dark:text-gray-400">
-              Belum ada riwayat kontribusi
-            </p>
+            <p className="text-gray-600 mb-4">Belum ada riwayat kontribusi</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -152,12 +143,12 @@ const ContributionHistory = () => {
                 {/* Icon */}
                 <div className="flex-shrink-0 mt-1">
                   {contribution.amount > 0 ? (
-                    <div className="w-10 h-10 flex items-center justify-center bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
-                      <LuCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <div className="w-10 h-10 flex items-center justify-center bg-emerald-100 rounded-full">
+                      <LuCheck className="w-5 h-5 text-emerald-600" />
                     </div>
                   ) : (
-                    <div className="w-10 h-10 flex items-center justify-center bg-red-100 dark:bg-red-900/30 rounded-full">
-                      <MdWarningAmber className="w-5 h-5 text-red-600 dark:text-red-400" />
+                    <div className="w-10 h-10 flex items-center justify-center bg-red-100 rounded-full">
+                      <MdWarningAmber className="w-5 h-5 text-red-600" />
                     </div>
                   )}
                 </div>
@@ -165,7 +156,7 @@ const ContributionHistory = () => {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2 mb-1">
-                    <p className="font-semibold text-gray-900 dark:text-white">
+                    <p className="font-semibold text-gray-900 ">
                       {contribution.amount > 0
                         ? "Kontribusi Berhasil"
                         : "Kontribusi Gagal"}
@@ -173,8 +164,8 @@ const ContributionHistory = () => {
                     <span
                       className={`text-sm font-bold whitespace-nowrap ${
                         contribution.amount > 0
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : "text-red-600 dark:text-red-400"
+                          ? "text-emerald-600"
+                          : "text-red-600"
                       }`}
                     >
                       {contribution.amount > 0
@@ -183,7 +174,7 @@ const ContributionHistory = () => {
                     </span>
                   </div>
 
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                  <p className="text-xs text-gray-600 mb-2">
                     {new Date(contribution.date).toLocaleDateString("id-ID", {
                       weekday: "long",
                       year: "numeric",
@@ -196,10 +187,10 @@ const ContributionHistory = () => {
 
                   {contribution.note && (
                     <div
-                      className={`text-xs p-2 rounded ${
+                      className={`text-md pl-0 p-2 rounded ${
                         contribution.amount > 0
-                          ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300"
-                          : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300"
+                          ? " text-emerald-700 "
+                          : " text-red-700 "
                       }`}
                     >
                       {contribution.note}
