@@ -4,6 +4,7 @@ const Select = ({
   value,
   onChange,
   label,
+  name,
   options = [],
   placeholder = "Select an option",
   textColor,
@@ -17,6 +18,7 @@ const Select = ({
       </label>
       <div className="input-box dark:bg-gray-700/40 dark:border-gray-600/50">
         <select
+          name={name}
           value={value}
           onChange={(e) => onChange(e)}
           className={

@@ -6,6 +6,7 @@ const Input = ({
   onChange,
   type,
   label,
+  name,
   placeholder,
   textColor,
   placeholderColor,
@@ -36,6 +37,7 @@ const Input = ({
       </label>
       <div className="input-box dark:bg-gray-700/40 dark:border-gray-600/50 relative">
         <input
+          name={name}
           value={value}
           onChange={(e) => onChange(e)}
           type={
